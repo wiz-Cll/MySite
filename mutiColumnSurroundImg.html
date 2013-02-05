@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script>
+
+		</script>
+		<style>
+			.column{
+				/*display:table-column;*/
+				float: left;
+				width: 900px;
+				height: 500px;
+				font: 0.9em/1.5em Microsoft Yahei;
+				
+				-moz-column-count: 3;
+				-moz-column-gap: 3em;
+				/*-moz-column-rule: 1px dashed black;*/
+				-webkit-column-count: 3;
+				-webkit-column-gap: 3em;
+				/*-webkit-column-rule: 1px dashed black;*/
+				column-count: 3;
+				column-gap: 3em;
+				/*column-rule: 1px dashed black;*/
+			}
+			.column:first-letter{
+				font-size: 2em;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="column">
+			<img src='src/img/dark-safari.png' width=200px height=200px style="float:left;"></img>
+			<p>用于解决组织代码问题、使用最为广泛的方法之一是模块模式（Module Pattern）。我尝试在下面解释一个基本示例，并讨论其若干特性。要想阅读更精彩的说明，并了解用尽各种不同方法的怪人，那么请参阅Ben Cherry的帖子——JavaScript Module Pattern: In-Depth（深入理解JavaScript模块模式）。</p>
+			<p>隔离（Isolation）
+请注意，这段代码包在被立即调用的函数里（仔细看最后一行）。由于在浏览器中，默认情况下会把JavaScript文件置于全局作用域级别上进行计算（evaluated），因此在我们在文件中声明的任何内容都是随处可用的。想象一下，要是先在lib1.js中声明了var name = '...'，然后又在lib2.js声明了var name = '...' 。那么后一句var声明就会替掉前一句的值——这可不太妙。然而，由于JavaScript拥有函数作用域级别，上例中所声明的一切都位于函数自身作用域内，与全局作用域毫无瓜葛。这意味着，无论系统将来如何变化，位于函数中的任何内容都不会受到影响。
+
+命名空间（Namespacing）
+
+在最后一行代码中会看到，我们要么将window.lab49赋给其自身，要么将空对象{}赋给它。尽管看起来有点儿怪，不过让我们一起来看下这样一个虚构系统，系统中的那些js文件一律使用了上例中的函数包装器（function wrapper）。
+
+首个被引入的文件会计算那个或语句（...||...），并发现左侧的表达式undefined（未定义）。由于undefined会被判定为假，因此或语句会进一步计算右侧表达式，在本例中就是空对象。或语句实际上是个表达式，它会返回计算结果，进而将结果赋给全局变量window.lab49。
+
+现在轮到接下来的文件使用此模式了，它会执行或语句，并发现window.lab49目前已是对象实例——真（对象实例会被判定为真）。此时或语句会走捷径，并返回这个会立即赋给其自身的值——其实什么都没做。
+
+由此导致的结果是，首个被引入的文件会创建lab49命名空间（就是个JavaScript对象），而且所有使用这种结构的后续文件都只是重用此现有实例。
+
+私有状态（Private State）<img src='src/img/dark-safari.png' width=200px height=200px style="float:left;"></img>
+
+正如刚才所说，由于位于函数内部，在其内部声明的所有内容都处于该函数的作用域内，而非全局作用域。这对于隔离代码真是棒极了，不过它还带来了一种效果，那就是没人能调用它。真是中看不中用啊！
+
+刚刚还谈到，创建window.lab49对象是为了用命名空间来有效地管理我们的内容。而且由于变量lab49被附加到window对象上，因此它是全局可用的。为了把其中的内容公布给模块外部，或许有人会公开声称，我们要做的全部就是把一些值附加到那个全局变量上。正如上例中所写的add函数一样。现在，在模块外部就可以通过lab49.add(2, 2)来调用add函数了。
+
+在此函数中声明一些值的另一结果是，要是某个值没有通过将其附加到全局命名空间或者此模块外部的某个对象上的方式来显示公开，那么外部代码就访问不到该值。实际上，我们恰好创建了一些私有值。</p>
+		</div>
+
+	</body>
+</html>

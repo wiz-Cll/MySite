@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>通过本机进行JsonP测试</title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script src="src/script/jquery.js"></script>
+		<script>
+			$(document).ready( function(){
+				function remoteAcceptor(data){
+					console.log("i accept some dta from remote:" + data.result);
+				}
+			} );
+		</script>
+		<script src="http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US&callback=remoteAcceptor
+"></script>
+	</head>
+	<body>
+
+	</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script>
+			window.onload = function(){
+				var arr = new Array();
+				arr[0]= {
+					name: '陈亮亮',
+					email:'cll@wiz.cn',
+					position: 'Web-front-end',
+					rank:2
+				}
+				arr[1]= {
+					name: '曹鹏',
+					email:'caop@wiz.cn',
+					position: 'Search',
+					rank:1
+				}
+				arr[2]= {
+					name: '王军伟',
+					email:'wjw@wiz.cn',
+					position: 'SOE',
+					rank:3
+				}
+				arr[3]= {
+					name: '谭墨',
+					email:'tansq@wiz.cn',
+					position: 'PM',
+					rank:0
+				}
+
+				// for(var i = 0; i < arr.length; i++){
+				// 	var para = document.createElement('p');
+				// 	// para.innerText = arr[i].name + arr[i].email +arr[i].position;
+				// 	para.innerText = 'cll@wiz.cn'._obj.name 
+				// 	document.getElementsByClassName("arrShow")[0].appendChild(para);
+				// }
+				function sortObj( arr, prop, orderBy, order){
+					var orderedArr = [];
+
+					switch(orderBy){
+						case 'char':
+							if( order =='asc'){
+								orderedArr = arr.sort( function( obj1, obj2 ) {
+									return obj1[prop].localeCompare(obj2[prop]);
+								});
+							}
+							else{
+								orderedArr = arr.sort( function( obj1, obj2 ) {
+									return obj2[prop].localeCompare(obj1[prop]);
+								});
+							}
+							break;
+						case 'number':
+							orderedArr = (order == 'asc')? arr.sort( function(obj1 ,obj2){ 
+									return obj1[prop] - obj2[prop]; 
+								} ) : arr.sort( function( obj1 ,obj2){
+									return obj2[prop] - obj1[prop];
+								} );
+							break;
+						default:
+							console.log("no expected params");
+							break;
+					}
+					return orderedArr;
+				}
+				var orderedArr = sortObj(arr, 'name', 'char', 'desc');
+				console.log(orderedArr);
+			}
+		</script>
+	</head>
+	<body>
+		<div class="arrShow">
+		</div>
+	</body>
+</html>

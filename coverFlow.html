@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>实现coverFlow</title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<style>
+			.atom{
+				float: left;
+				width: 200px;
+				font: 0;
+				background: #accded;
+				-webkit-transform: perspective(400px) rotateY(40deg) ;
+				-webkit-transform-origin: 50% 25%;
+
+				-moz-transform: perspective(400px) rotateY(40deg) ;
+				-moz-transform-origin: 50% 25%;
+			}
+			.original, .mirror{
+				display: block;
+				height: 180px;
+				width: auto;
+				margin: 0;
+				padding: 0;
+			}
+			
+			.mirror{
+				width: auto;
+				margin: 0;
+				padding: 0;
+				/*margin-top: -4px;*/
+				opacity: 0.7;
+				-webkit-transform: rotateX(180deg);
+				-moz-transform: rotateY(180deg);
+				transform: rotateY(180deg);
+			}
+			.img{
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<script>
+			window.onload = function() {
+				var eleArr = document.getElementsByClassName('atom');
+				var eleArrLen = eleArr.length;
+				for( var i = 0; i < eleArrLen; i++){
+					var mirror = document.createElement('img');
+					mirror.src=eleArr[i].firstElementChild.src;
+					mirror.className = 'mirror';
+					eleArr[i].appendChild(mirror);
+				}
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div class="">
+			<div class="atom">
+				<img src="src/img/myavatar.png" class="original">
+				<!-- <img src="src/img/winphone-org.jpg" class="original"> -->
+			</div>			
+			<div class="atom">
+				<img src="src/img/myavatar.png" class="original">
+			</div>
+			<div class="atom">
+				<img src="src/img/winphone-org.jpg" class="original">
+			</div>
+			<div class="atom">
+				<img src="" class="">
+			</div>
+			<div class="atom">
+				<img src="" class="">
+			</div>
+		</div>
+
+		<!-- <div class="father" style="width: 200px; height:200px; padding: 0 4px;margin: 0 auto;border:4px black; border-style: none; border-top-style:solid; border-bottom-style: solid">
+			<div class="son" style="width: 100%; height: 100%; margin: 0 0 0 -4px;border:4px black; border-style: none; border-left-style:solid; border-right-style: solid">
+			</div>
+		</div> -->
+	</body>
+</html>
+
+
+

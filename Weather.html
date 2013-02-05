@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script type="text/javascript" src="src/script/jquery.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+		  	$("p").click(function(){
+		 		console.log("bind function one");
+		    });
+		    $("p").click(function(){
+		 		console.log("bind function 22222");
+		    });
+		    // $('p').unbind();
+			// $.getJSON('http://m.weather.com.cn/data/101010100.html',getWeatherCallBack);
+
+		});
+		function getWeatherCallBack( data, status){
+			if( status == 'success'){
+				if( data != undefined){
+					console.log(data.weatherinfo);
+				}
+			}
+		}
+		</script>
+	</head>
+
+	<body>
+		<p>If you click on me, I will disappear.</p>
+		<div>
+			<div></div>
+			<div>canvas:随机颜色+边缘绘制+不规则闪烁+消失··</div>
+
+		</div>
+	</body>
+
+</html> 

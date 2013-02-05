@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="src/layout/login.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="src/layout/animate-custom.css" media="all" />
+
+		<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="src/layout/lowpatch.css" media="all" />
+		<script src="mediaquery.js"></script>
+		<![endif]-->
+		<script>
+			//使绝对定位的元素水平水平垂直都居中 
+			function centerlize(params) {
+				if( typeof params == "object"){
+					var width = screen.availWidth;
+					var height = screen.availHeight;
+					if(params.length == "undefined"){
+						assign(params);
+					}
+					else{
+						var len = params.length;
+						for( var i = 0; i < len; i++ ){
+							assign(params[i]);
+						}
+					}
+				}
+				function assign(elem, percentage) {
+					// 可以增加一层逻辑判断  如果高度过大  就不再垂直居中
+					var cHeight = window.getComputedStyle(elem,'').height;
+					var cWidth = window.getComputedStyle(elem,'').width;
+					var cHeight = cHeight.slice(0, cHeight.indexOf('px'));
+					var cWidth = cWidth.slice(0, cWidth.indexOf('px'));
+					console.log(cHeight, cWidth);
+					elem.style.top = ( height - cHeight)*0.4 +"px";
+					elem.style.left = ( width - cWidth )*0.5+"px";
+				}
+			}
+
+			window.onload = function() {
+				// 多添加HTML5特性   如多类  不要在乎兼容性了！！
+				var aniTime = 800;
+				var login = document.getElementsByClassName('login')[0];
+				var userinfo = document.getElementsByClassName("userinfo")[0];
+				var params = new Array();
+				params = [login, userinfo];
+				centerlize(params);
+
+				document.getElementsByClassName('btn')[0].onclick = function() {
+
+
+					// 通过字符串操作实现“多类多样式”
+					// 不过在这里也没多大用处，因为只有高级浏览器支持animation  而高级浏览器是支持classlist的
+					login.className =login.className+' '+'loginani';
+					userinfo.className = 'infoani';
+					console.log(userinfo.innerText);
+					setTimeout(function() {
+						userinfo.style.display="block";
+						login.style.display= "none";
+						// login.classList.remove('loginani');
+						// userinfo.classlist.remove('infoani');
+					},aniTime);
+				};
+				// document.getElementsByClassName('btn')[0].classList.add("afjskej");
+				console.log(window.innerHeight);
+			}
+		</script>
+	</head>
+	<body>
+		<div class="forani" >
+
+			<div class="login">
+				<div class="shdmaker">
+				</div>
+				<div class="avatarctn">
+					<img class="avatar" src="src/img/defaultavatar.jpg"></img>
+					<div class="highlight"></div>
+				</div>
+
+				<div class="formctn">
+					<form name="">
+						<label class="forlow">UserName</label>
+						<input type="text" placeholder="UserName" class="username"></input>
+						<label class="forlow">Password</label>
+						<input type="password" placeholder="Password" class="passwd"></input>
+						<a class="btn" id="click-login">Login</a>
+					</form>
+					<br clear="both" />
+				</div>
+			</div>
+
+
+			<div class="userinfo">
+				<div class="shdmaker">
+				</div>
+				<div class="avatarctn">
+					<img class="avatar" src="src/img/defaultavatar.jpg"></img>
+					<!-- <img class="avatar" src="src/img/myavatar.png"></img> -->
+
+					<div class="highlight"></div>
+				</div>
+
+				<div class="formctn">
+					<form name="">
+						<label class="forlow">UserName</label>
+						<label class="forlow">Password</label>
+						<input type="password" placeholder="Welcome" class="passwd"></input>
+					</form>
+					<br clear="both" />
+				</div>
+			</div>
+
+		</div>
+	</body>
+	<script>
+	</script>
+</html>

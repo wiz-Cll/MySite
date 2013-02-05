@@ -1,0 +1,63 @@
+body{
+	padding: 0;
+	margin: 0;
+}
+/*为实现dock在hover时放大的效果而做的努力：在设置display:inline无果之后
+，启用display:table  table-row  table-cell; 
+效果显著：实现了dock随子元素的hover变大而变大的效果
+但是由于transform:scale; 是脱离文本流的变形，所以启用了宽和高的分别变幻，结果还是不理想：width和height的百分比问题····
+所以还需要调整方案····
+那么，dock和app分别变换怎么样呢？只要hover进dock  dock就加宽  
+hover到app时  再进行相应的变换，如scale， origin设为中心，它之前的app都向左translate一点 之后的都向左translate一点（受外国友人制作的coveflow启发），这样就不会有脱离文本流之后相互遮挡的问题了。这个方案唯一的问题就是，dock和app的相对分离变换计划，会不会显得怪异···再测试吧···
+*/
+.dockCtn{
+	/*display: table;*/
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 0 40px;
+	/*height: 40px;*/
+	outline: 1px black dashed;
+}
+.dock{
+	display: table;
+	margin: 0 auto  5px auto;
+	padding: 0 15px;
+	height: 80px;
+	width: auto;
+	/*width: 200px;*/
+	/*background: url(../img/dock-bg.png) no-repeat;*/
+	background: #accded bottom left;
+	/*outline: 2px dashed #accded;*/
+	overflow: hidden;
+}
+.dock:hover{
+	/*-webkit-transform: scaleX(1.1);*/
+}
+.app{
+	display: table-cell;
+	width: auto;
+}
+.app{
+	/*-webkit-transition: -webkit-transform 0.4s ease;*/
+	/*-webkit-transition: width 0.4s ease;*/
+	/*-webkit-transition: height 0.4s ease;*/
+}
+.app:hover .icon{
+	width: 80px;
+	height: auto;
+	/*height: 120%;*/
+}
+.icon{
+	/*display: block;*/
+	width: 64px;
+	height: 64px;
+}
+.mirror{
+	display: block;
+	width: 56px;
+	height: 56px;
+	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+	opacity: 0.3;
+}
