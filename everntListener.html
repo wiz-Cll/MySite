@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script>
+			$(document).ready( function(){
+
+				// var e = jQuery.Event("click");
+				
+
+
+				$('#navlist').bind('click', function(event){
+					var e = event;
+					var $target = $(e.target);
+					switch( $target.text() ){
+						case '导航标签1':
+							$('#content111').html('<span>' + $target.text() + 'fillcontents' + '</span>');
+							break;
+						case '导航标签2':
+							$('#content222').html('<span>' + $target.text() + 'fillcontents' + '</span>');
+
+							break;
+						case '导航标签3':
+							$('#content333').html('<span>' + $target.text() + 'fillcontents' + '</span>').show().unbind().bind('click',function( event ){
+								var e = event;
+								var $target = $(e.target);
+								switch( $target.tagName ){
+									case 'SPAN':
+										console.log($target.text());
+										break;
+									default:
+										console.log(',eiyouhuoqudao ');
+										console.log($target.attr('tagName'));
+										return false;
+								}
+							});
+
+							break;
+						default:
+							return false;
+					}
+				});
+
+				$('#fakeE').trigger( 'click' );
+			});
+		</script>
+		<style>
+			.contents{
+				display: none;
+				height: 50px;
+				width: 200px;
+				background: #accded;
+			}
+			span{
+				border: 1px dashed black;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="navlist">
+			<ul>
+				<li>导航标签1</li>
+				<li>导航标签2</li>
+				<li  id="fakeE">导航标签3</li>
+				<li>导航标签4</li>
+			</ul>
+		</div>
+		<div id="navcontent">
+			<div id="content111" class="contents"></div>
+			<div id="content222" class="contents"></div>
+			<div id="content333" class="contents"></div>
+			<div id="content444" class="contents"></div>
+		</div>
+	</body>
+</html>
