@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script>
+			window.onload = function(){
+				document.getElementsByTagName('button')[0].addEventListener('click',ajaxFunc,false);
+				function ajaxFunc(){
+					var xhr = new XMLHttpRequest();
+					console.log( xhr.readyState );
+					xhr.onreadystatechange = function(){
+						console.log( xhr.readyState );
+						console.log( typeof xhr.responseText );				
+						console.log( xhr.responseText );
+					}
+					xhr.open('get', 'paperlizeTest.html');
+					xhr.send( null );
+					
+
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<button>Send XHR and handle the response</button>
+	</body>
+</html>
