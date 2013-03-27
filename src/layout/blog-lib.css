@@ -1,0 +1,40 @@
+body{
+	margin: 0;
+	padding: 0;
+	font: 1em 'Microsoft Yahei';
+	/*height: 100%;*/
+}
+
+section{
+	margin: 0 auto;
+	width: 1024px;
+	/*height: 300px;*/
+	padding: 0;
+}
+article{
+	display: inline-block;
+	width: 300px;
+	height: 100px;
+	background: #accded
+
+}
+.timeline, .line-left, .line-right{
+	display: inline-block;
+	/*float: left;*/
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background: #accded;
+	vertical-align: top;
+	text-align: left;
+}
+
+
+.timeline{
+	width: 50px;
+	overflow: hidden;
+}
+
+.line-left, .line-right{
+	width: 480px;
+}
