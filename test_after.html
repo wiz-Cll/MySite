@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script src="../bootstrap/js/jquery.js"></script>
+
+		<script>
+			$(document).ready(function(){
+
+				var hideTO;
+				var showTO;
+
+				$('.aftertest').hover(
+					function( event ){
+						var e = event;
+						var $target = $(e.target );
+						var $tooltip = $('.tooltip');
+						$tooltip.css('left', $target.offset().left + Number($target.css('width').replace(/px/,'')) + 30 );
+						$tooltip.css('top', $target.offset().top + Number($target.css('height').replace(/px/,'')) - 60 );
+						setTimeout(function(){ 
+							$tooltip.css('display', 'block')
+						}, 200);
+					},
+
+					function( event ){
+						hideTO = setTimeout(function(){ 
+							$('.tooltip').css('display', 'none');
+						},200);
+
+					}
+				);
+
+				$('.tooltip').hover( 
+					function(){
+						clearTimeout( hideTO );
+					},
+					function(){
+						$('.tooltip').css('display', 'none');
+					}
+				)
+				
+			});
+			
+		</script>
+		<style>
+			.aftertest:after{
+				content: attr(data-content);
+				position: absolute;
+				top: 10px;
+				display: none;
+				width: 500px;
+				height: auto;
+				padding: 20px;
+				box-shadow: 0 0 5px #aaa;
+
+				z-index: 1000;
+			}
+			td{
+				/*height: 80px;*/
+				padding: 10px;
+			}
+			/*.trdiv:hover .aftertest:after{
+				display: inline;
+			}*/
+			.tooltip{
+				position: absolute;
+				display: none;
+				/*top: 400px;
+				left: 500px;*/
+				width: 350px;
+				height: 350px;
+				background: #accded;
+				border-radius: 10px;
+				box-shadow: 0 0 5px #aaa;
+			}
+			.tooltip:hover{
+				/*display: block;*/
+			}
+			.tooltip .psuedo-e{
+				/*content:'';*/
+				position: relative;
+				left: -40px;
+				top: 50px;
+				width: 0;
+				height: 0;
+
+				border-width: 20px;
+				border-color: transparent #accded transparent transparent;
+				border-style:solid;
+			}
+		</style>
+	</head>
+	<body>
+		<table border="1">
+			<tr class="trdiv">
+				<td>第一列</td>
+				<td>第2列</td>
+				<td class="aftertest" data-content="可以填充的内容">After伪元素测试，添加after样式和定位</td>
+				<td>第4列</td>
+				<td>第5列</td>
+			</tr>
+			<tr>
+				<td>第一列</td>
+				<td>第2列</td>
+				<td class="aftertest" data-content="222222">After伪元素测试，添加after样式和定位</td>
+				<td>第4列</td>
+				<td>第5列</td>
+			</tr>
+			<tr  class="trdiv">
+				<td>第一列</td>
+				<td>第2列</td>
+				<td class="aftertest" data-content="3333333">After伪元素测试，添加after样式和定位</td>
+				<td>第4列</td>
+				<td>第5列</td>
+			</tr>
+			<tr>
+				<td>第一列</td>
+				<td>第2列</td>
+				<td class="aftertest" data-content="44444444">After伪元素测试，添加after样式和定位</td>
+				<td>第4列</td>
+				<td>第5列</td>
+			</tr>
+		</table>
+
+
+		<div class="tooltip">
+			<div class="psuedo-e"></div>
+		</div>
+	</body>
+</html>

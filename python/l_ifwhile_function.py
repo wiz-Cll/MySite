@@ -1,7 +1,9 @@
+ # -*- coding: utf-8 -*-
+
 def guessNumber():
 	while True:
 		# ch charts and simbles is not supported
-		guess = int(raw_input('you guess```'))
+		guess = int(raw_input('you guess···'))
 		if guess == 56 :
 			# break will also jump over else block
 			print 'lucky you!'
