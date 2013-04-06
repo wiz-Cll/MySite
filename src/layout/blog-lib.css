@@ -1,58 +1,217 @@
+ /*主要还是使用float来实现多栏布局（inline-block太难用了···）*/
+/* 细节中的timeline  用ul100%宽度 + line relative而且left为负值来实现的    不失语义性  又可以实现自己未来计划的响应式*/
 body{
+    margin: 0;
+    padding: 0;
+    /*outline: 2px dashed #accded;*/
+    height: 100%;
+    overflow: auto;
+    font-family: "Microsoft Yahei" "times";
+}
+h1,h2,h3,h4,h5{
 	margin: 0;
 	padding: 0;
-	font: 1em 'Microsoft Yahei';
-	height: 100%;
+  	vertical-align: baseline;
 }
-h1,h2,h3,h4,h5,p{
+p{
 	margin: 0;
 	padding: 0;
-}
-section{
-	margin: 0 auto;
-	width: 1024px;
-	text-align: center;
-	/*height: 300px;*/
-	padding: 0;
-	/*font-size: 0;*/
-}
-article{
-	width: 300px;
-	height: 100px;
-	background: #accded
+  	vertical-align: baseline;
+	font: 0.8em/1.5 "Microsoft Yahei";
 
 }
-.timeline, .line-left, .line-right{
-	/*display: inline-block;
-	*zoom: 1;*/
-	margin: 0 0 30px 0;
-	padding: 10px;
+
+header{
+    position: fixed;
+    width: 100%;
+    height: 2em;
+    text-align: center;
+    background: #3B5998;
+    z-index: 1000;
+}
+
+.header-content{
+    position: static;
+    width: 1010px;
+    height: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.logo-slogen{
+    float: left;
+    height: 100%;
+}
+.nav{
+    float: right;
+    height: 100%;
+}
+.nav ul{
+    /*float: right;*/
+    margin: 0;
+    padding:0;
+    list-style: none;
+    vertical-align: center;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+.nav li{
+    float: left;
+    margin: 0 0 0 0.5em;
+    min-width: 5em;
+    height: 2em;
+    padding: 0.5em 0;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    /*outline: 1px solid red;*/
+    /*font-size: */
+}
+
+.nav li a{
+    display: block;
+    font-size: 1em;
+    line-height: 1em;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    color: #fff;
+    text-decoration: none;
+    -moz-transition: margin 0.2s ease-out 0.05s;
+    -webkit-transition: margin 0.2s ease-out 0.05s;
+    -o-transition: margin 0.2s ease-out 0.05s;
+    transition: margin 0.2s ease-out 0.05s;
+}
+
+.nav li:hover a{
+    margin-top: -1.5em;
+}
+.nav li a:after{
+    content: attr(data-after);
+    display: block;
+    margin-top: 0.5em;
+    font-size: 1em;
+    line-height: 1em;
+    color: red;
+}
+
+
+
+
+
+
+
+.main{
+	width: 1010px;
+	margin: 0 auto;
+    padding: 2em 0 0 0;
+}
+aside{
+    float: right;
+    width: 145px;
+}
+section.timeline-ctn{
+    /*float: left;*/
+    margin-right: 150px;
+    height: 100%;
+}
+
+ul#timeline{
+    float: left;
+    width: 850px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #F0F0E3;
+}
+.line{
+    float: left;
+    position: relative;
+    width: 2px;
+    background: #accded;
+    /*opacity: 0.3;*/
+    height: 100%;
+    left: -50%;
+    margin-left: 4px;
+    /*relative定位并不会完全脱离文档流,他会基于文档结构中的位置,进行"相对的"定位,而原来的位置,是会保留的*/
+    /* line的父元素 宽度是810px,向左外边距为-50%，那么他就会向左移动405px（基于原来的位置），这样，距离ul的左边就是395px，无形之间完成了“向右50% 然后margin-left自身宽度的负一半”的居中对齐方式，不过引号中是实现父元素对齐的方法，现在是在兄弟元素中浮动对齐了*/
+}
+
+/*使用ul的子元素li来实现居中的时间线 会导致在同一个层次的问题  无法重叠*/
+/*li.lines{
+	position: relative;
 	height: 100%;
-	background: #accded;
-	vertical-align: top;
-	text-align: left;
-	border: none;
+	left: 50%;
+	width: 10px;
+    background: #accded;
+    opacity: 0.3;
+    z-index: 100;
+}*/
+
+
+.leftmeta, .rightmeta{
+	position: relative;
+    width: 50%;
+    /*height: auto;*/
+    min-height: 50px;
+    margin:8px 0;
+    box-sizing: border-box;
+}
+.leftmeta{
+    float: left;
+	background: #E5E8C9;
+    padding: 5px 15px 5px 5px;
+}
+.rightmeta{
+    float: right;
+    top: 20px;
+    background: #40BCDF;
+    padding: 5px 5px 5px 15px;
+
+}
+.sth-ctn{
+	position: relative;
+	width: 100%;
+	height: auto;
+	min-height: 80px;
+	margin: 0;
+	/*padding: 8px 0;*/
+	box-sizing: border-box;
+	border-radius: 3px;
+	box-shadow: 0 0 8px rgba(0,0,0,0.15);
+	background: #fff;
+}
+.sth{
+	width: 100%;
+	padding: 5px 8px;
 	box-sizing: border-box;
 }
-.timeline{
-	position: relative;
-	width: 50px;
-	left: 50%;
-	margin-left: -25px;
-}
-.line-right{
-	float: right;
-	/*margin-left: -0.25em;*/
-}
-.line-left{
-	float: left;
+
+.tile{
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-width: 8px;
+	border-style: solid;
 }
 
-.timeline{
-	width: 50px;
-	overflow: hidden;
-}
+.sth-header{
+    height: 36px;
+    border: 1px none #ccc;
+    border-bottom-style: solid;
 
-.line-left, .line-right{
-	width: 480px;
+}
+.sth-content{
+    padding: 5px 0;
+    min-height: 32px;
+}
+.leftmeta .tile{
+	top: 20px;
+	left: 100%;
+	border-color: transparent transparent transparent #fff;
+}
+.rightmeta .tile{
+	top: 20px;
+    left: -16px;
+	border-color: transparent #fff transparent transparent;
 }

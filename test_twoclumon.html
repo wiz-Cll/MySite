@@ -1,0 +1,63 @@
+<html>
+     <head>
+          <meta charset="utf-8">
+          <title>测试两栏布局与timeline</title>
+          <style>
+          /*主要还是使用float来实现多栏布局（inline-block太难用了···）*/
+          /* 细节中的timeline  用ul100%宽度 + line relative而且left为负值来实现的    不失语义性  又可以实现自己未来计划的响应式*/
+               aside{
+                    float: left;
+               }
+               section.timeline-ctn{ 
+                    float: left;
+                    height: 100%;
+               }
+               body{
+                    margin: 0;
+                    padding: 0;
+                    outline: 2px dashed #accded;
+                    height: 100%;
+                    overflow: auto;
+               }
+               ul#timeline{
+                    float: left;
+                    width: 800px;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                    outline: 1px solid #accded;
+               }
+               .line{
+                    float: left;
+                    position: relative;
+                    width: 10px;
+                    background: #accded;
+                    /*height: 800px;*/
+                    height: 100%;
+                    left: -50%;
+                    margin-left: -5px;
+               }
+               .leftmeta{
+                    float: left;
+               }
+               .rightmeta{
+                    float: right;
+               }
+          </style>
+
+     </head>
+     <body>
+          <aside>
+               i am aside bar;
+          </aside>
+          <section class="timeline-ctn">
+               <ul id="timeline">
+                    <li class="leftmeta">left left</li>
+                    <li class="rightmeta">right right</li>
+               </ul>
+               <div class="line">
+               </div>
+          </section>
+     </body>
+</html>
