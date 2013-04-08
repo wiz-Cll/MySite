@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<style>
+			
+			#test li:nth-child(2n){
+				background: #ddd;
+			}
+			#test li:nth-child(2n+1){
+				background: #fff;
+			}
+			#test li:last-child{
+				background: #accded;
+			}
+		</style>
+		<script>
+			window.onload = function(){
+				document.querySelector('.btn').onclick = addByHtml;
+				function addByHtml(){
+					document.querySelector('#test').innerHTML = '<li>新增的列表项,我的样式是怎样的？</li>' + document.querySelector('#test').innerHTML;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="test">
+			<li>原有的列表项</li>
+			<li>原有的列表项</li>
+			<li>原有的列表项</li>
+			<li>原有的列表项我是最后一个，我的背景是蓝色的</li>
+		</ul>
+		<a class="btn">添加li标签</a>
+	</body>
+</html>
