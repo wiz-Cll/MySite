@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" manifest="epic.appcache">
+	<head>
+		<meta charset="utf-8">
+        <title>MD编辑 --chenllos</title>
+        <link rel="stylesheet" type="text/css" href="src/layout/blog-lib.css" />
+		<script src="epiceditor/js/epiceditor.min.js"></script>
+		<script>
+			window.onload = function(){
+				// document.querySelector('#editor-ctn').
+				var editor = new EpicEditor().load();
+			}
+		</script>
+	</head>
+	<body>
+		<header>
+     		<div class="header-content">
+     			<div class="logo-slogen">
+     			</div>
+     			<div class="nav">
+     				<ul>
+     					<li><a href="http://chenllos.com" data-after="Home">首页</a></li>
+     					<li><a href="" data-after="AboutMe">关于我</a></li>
+     				</ul>
+     			</div>
+     		</div>
+     	</header>
+     	<div class="main">
+			<div id="epiceditor">
+			</div>
+		</div>
+	</body>
+</html>

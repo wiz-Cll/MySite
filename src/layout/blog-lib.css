@@ -7,6 +7,7 @@ body{
     height: 100%;
     overflow: auto;
     font-family: "Microsoft Yahei" "times";
+    background: #eee;
 }
 h1,h2,h3,h4,h5{
 	margin: 0;
@@ -76,10 +77,11 @@ header{
     vertical-align: baseline;
     color: #fff;
     text-decoration: none;
-    -moz-transition: margin 0.2s ease-out 0.05s;
-    -webkit-transition: margin 0.2s ease-out 0.05s;
-    -o-transition: margin 0.2s ease-out 0.05s;
-    transition: margin 0.2s ease-out 0.05s;
+
+    -webkit-transition: all 0.15s ease-out 0.05s;
+       -moz-transition: all 0.15s ease-out 0.05s;
+         -o-transition: all 0.15s ease-out 0.05s;
+            transition: all 0.15s ease-out 0.05s;
 }
 
 .nav li:hover a{
@@ -91,7 +93,7 @@ header{
     margin-top: 0.5em;
     font-size: 1em;
     line-height: 1em;
-    color: red;
+    color: #accded;
 }
 
 
@@ -214,4 +216,12 @@ ul#timeline{
 	top: 20px;
     left: -16px;
 	border-color: transparent #fff transparent transparent;
+}
+
+
+
+#epiceditor{
+    margin: 30px auto;
+    width: 800px;
+    height: 495px;
 }
