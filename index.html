@@ -5,54 +5,6 @@
         <link rel="stylesheet" type="text/css" href="src/layout/blog-lib.css" />
         <script>
         	window.onload = function(){
-
-				function execAtO( type, func ){
-				    var allTypes = {
-				        hour: 60,
-				        ten_min: 10,
-				        five_min: 5
-				    };
-
-
-				    var now = new Date();
-				    var now_min = now.getMinutes();
-				    var now_sec = now.getSeconds();
-				    if(  fitType( allTypes[type], now_min )  ){
-				        func();
-				        next = 60 - now_sec + (allTypes[type]-1)*60;
-				        console.log('合适，立即执行\n');
-				        setTimeout( function(){ execAtO( type, func)}, next*1000);
-				    }
-				    else{
-				        next = ( getNextO( allTypes[type], now_min ) - now_min - 1 ) * 60 + (60-now_sec);
-				        console.log('不合适，将在 '+ next + ' 秒后执行\n');
-				        setTimeout( function(){ execAtO( type, func)}, next*1000);
-				    }
-				    
-				    
-				    function fitType( Onum, now_min){
-				        if( now_min%Onum === 0 ){
-				            return true;
-				        }
-				        else{
-				            return false;
-				        }
-				    }
-
-				    function getNextO( Onum, now_min ){
-				    	var tmpArr = (now_min/Onum).toString().split('.');
-				    	return (Number(tmpArr[0])+1)*Onum;
-				    }
-				}
-
-				function funcAtO(){
-					console.log( (new Date()) );
-					console.log( (new Date()).valueOf() );
-				    console.log('我是整点的函数\n');
-				    console.log(' 我应该是一个整点最新天气的函数，一直执行，直到的天气的发布时间是当前小时数');
-				}
-
-				execAtO('five_min', funcAtO);
         	}
         </script>
     </head>
