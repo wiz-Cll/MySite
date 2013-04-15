@@ -1,5 +1,5 @@
 var http = require('http');
-
+var Weather = require('./mongoose');
 function execAtO( minutes, func ){
     var now = new Date();
     var now_min = now.getMinutes();
@@ -7,12 +7,12 @@ function execAtO( minutes, func ){
     if(  fitType( minutes, now_min )  ){
         func();
         next = 60 - now_sec + ( minutes - 1 )*60;
-        // console.log('合适，立即执行\n');
+        console.log('合适，立即执行\n');
         setTimeout( function(){ execAtO( minutes, func)}, next*1000);
     }
     else{
         next = ( getNextO( minutes, now_min ) - now_min - 1 ) * 60 + (60-now_sec);
-        // console.log('不合适，将在 '+ next + ' 秒后执行\n');
+        console.log('不合适，将在 '+ next + ' 秒后执行\n');
         setTimeout( function(){ execAtO( minutes, func)}, next*1000);
     }
     
@@ -40,8 +40,29 @@ function getWeatherAtO(){
     		info += data;
     	});
     	res.on('end', function(){
-		console.log( '此时获取了天气信息： ' + (new Date()).valueOf() );
-		console.log( JSON.parse( info ) );
+    		console.log( '此时获取了天气信息： ' + (new Date()).valueOf() );
+            var wObj = JSON.parse( info )
+    		// console.log( wObj );
+
+            console.log( wObj );
+            var fakeObj = {city:'beijing', temp:'23'};
+            var wEntity = Weather.init( fakeObj );
+
+            wEntity.save( function(err){
+                if( err ){
+                    console.log('发生错误：' + err );
+                }
+                else{
+                    console.log('保存成功！保存的天气信息为：');
+                    Weather.model.find( null, function( err, infos){
+                        if( !err ){
+                            if( infos.length > 0){
+                                console.log( infos );
+                            }
+                        }
+                    });
+                }
+            });
     	});
     });
 }

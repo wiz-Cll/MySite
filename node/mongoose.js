@@ -8,29 +8,29 @@ var weatherSchema = mongoose.Schema({
 	ws: Number
 });
 
-var Weather = mongoose.model('Weather', weatherSchema);
+var WeatherModel = mongoose.model('Weather', weatherSchema);
 
-var wInfo = new Weather({city: 'beijing', temp:15, ws: '3'});
+var wInfo = new WeatherModel();
 
-wInfo.save( function(err){
-	if( err ){
-		console.log('出错了···' + err);
-	}
-	else{
-		console.log('天气对象存储了没~？');
-		console.log( Weather.find( null,function( err, info ){
-			console.log( info );
-			// info是一个结果集   一个数组
-			if( info.length !== 0){
-				console.log('OK, 我们来进行删除的操作');
-				deleteInfos();
-			}
-		}) );
-	}
-})
+// wInfo.save( function(err){
+// 	if( err ){
+// 		console.log('出错了···' + err);
+// 	}
+// 	else{
+// 		console.log('天气对象存储了没~？');
+// 		console.log( WeatherModel.find( null,function( err, info ){
+// 			console.log( info );
+// 			// info是一个结果集   一个数组
+// 			if( info.length !== 0){
+// 				console.log('OK, 我们来进行删除的操作');
+// 				deleteInfos();
+// 			}
+// 		}) );
+// 	}
+// })
 
 function deleteInfos(){
-	Weather.remove( null , function( err, info){
+	WeatherModel.remove( null , function( err, info){
 		if( err ){
 			console.log('出错了···' + err);
 		}
@@ -43,3 +43,16 @@ function deleteInfos(){
 	});
 }
 
+var Weather = function( obj ){
+	this.init = function( obj ){
+		return new WeatherModel( obj );
+	}
+}
+
+// Weather.prototype.save = function(first_argument) {
+// 	// body...
+// };
+exports.init = function( obj ) {
+			return new WeatherModel( obj );
+		}
+exports.model = WeatherModel;

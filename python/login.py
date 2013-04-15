@@ -9,8 +9,8 @@ user_id = ''
 password = ''
 
 if env == 'local':
-    as_endpoint = 'http://192.168.0.111/wizas/xmlrpc'
-    ks_endpoint = 'http://192.168.0.111/wizks/xmlrpc'
+    as_endpoint = 'http://192.168.0.108/wizas/xmlrpc'
+    ks_endpoint = 'http://192.168.0.108/wizks/xmlrpc'
     user_id = '1@1.com'
     password = '111111'
 elif env == 'local_ent':
