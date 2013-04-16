@@ -4,13 +4,22 @@ mongoose.connect('mongodb://localhost/test');
 
 var weatherSchema = mongoose.Schema({
 	city: String,
-	temp: Number,
-	ws: Number
+	cityid: String,
+	temp: String,
+	WD: String,
+	WS: String,
+	SD: String,
+	WSE: String,
+	time: String,
+	sentTime: Date,
+	gotTime: Date,
+	isRadar: String,
+	Radar: String
 });
 
 var WeatherModel = mongoose.model('Weather', weatherSchema);
 
-var wInfo = new WeatherModel();
+// var wInfo = new WeatherModel();
 
 // wInfo.save( function(err){
 // 	if( err ){
@@ -36,7 +45,7 @@ function deleteInfos(){
 		}
 		else{
 			console.log('貌似成功了');
-			 Weather.find( null,function( err, info ){
+			 WeatherModel.find( null,function( err, info ){
 				console.log( info );
 			})
 		}
@@ -49,9 +58,7 @@ var Weather = function( obj ){
 	}
 }
 
-// Weather.prototype.save = function(first_argument) {
-// 	// body...
-// };
+
 exports.init = function( obj ) {
 			return new WeatherModel( obj );
 		}
