@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script src="src/script/jquery.js"></script>
+		<script>
+			$(document).ready(function(){
+    var reqUrl = 'http://127.0.0.1:8080/test';
+    $.getJSON( reqUrl,null, function(data,status){
+        if( status == 'success'){
+            console.log( data );
+        }
+    });
+			});
+
+
+	function ajaxGet( url, param, callBack){
+		var xhr = new XMLHttpRequest();
+		url = montageUrl( url , param);
+		xhr.open('GET', url);
+		xhr.onreadystatechange = function(){
+			if( xhr.readyState == 4 && xhr.status == 200){
+				callBack( xhr.responseText );
+			}
+		}
+		xhr.send( null );
+
+	}
+
+
+	function montageUrl( url, param ){
+	     var requestUrl = url;
+	     var separator = '&';
+	     if( url.indexOf('?')  < 0){
+	           separator = '?';
+	     }
+
+	     for( var i in param){
+	          requestUrl += separator + i + '=' + param[i];
+	          separator = '&';
+	     }
+	      return requestUrl;
+	}
+		</script>
+	</head>
+	<body>
+		<div id="res"></div>
+	</body>
+</html>

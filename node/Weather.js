@@ -1,10 +1,39 @@
 var http = require('http');
+var Url = require('url');
 var Weather = require('./mongoose');
 var City = require('./City');
 
 var latestW = [];
 
 var cityId = '101010100';
+
+
+
+
+execAtO(5, getWeatherAtO );
+
+// execAtO(1, function(){
+//     for( var i in City.map ){
+//         cityId = i;
+//         getWeatherAtO();
+//     }
+// });
+
+http.createServer( sunnyServer ).listen(8080);
+
+function sunnyServer( req, res){
+    var pathName = Url.parse( req.url ).pathName;
+
+    res.writeHeader(200, {'Content-Type': 'test/plain'});
+    var str = '{"temp":"23", "ws":"3级"}';
+    res.write( str );
+
+    // res.writeHeader(200, {'Content-Type': 'application/json'});
+    // var obj = {temp:"23", ws:"3级"};
+    // res.write( JSON.stringify(obj) );
+
+    res.end();
+}
 
 
 function execAtO( minutes, func ){
@@ -33,25 +62,25 @@ function execAtO( minutes, func ){
     }
 
     function getNextO( Onum, now_min ){
-    	return ( parseInt( now_min/Onum ) +1 )*Onum;
+        return ( parseInt( now_min/Onum ) +1 )*Onum;
     }
 }
 
 
 function getWeatherAtO(){
-	// console.log('\n\n\n');
+    // console.log('\n\n\n');
     var localCityId = cityId
-	var sentTime = new Date();
+    var sentTime = new Date();
     var info = '';
 
     var reqUrl = 'http://www.weather.com.cn/data/sk/'+ localCityId + '.html';
     // console.log( reqUrl );
 
     http.get( reqUrl, function( res ){
-    	res.on('data', function(data){
-    		info += data;
-    	});
-    	res.on('end',function(){
+        res.on('data', function(data){
+            info += data;
+        });
+        res.on('end',function(){
             callbackGetWeather(info, localCityId);
         });
     });
@@ -139,9 +168,3 @@ function getWeatherAtO(){
 function sixDays(){
 
 }
-execAtO(1, function(){
-    for( var i in City.map ){
-        cityId = i;
-        getWeatherAtO();
-    }
-});
