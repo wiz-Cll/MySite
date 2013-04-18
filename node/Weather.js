@@ -24,13 +24,13 @@ http.createServer( sunnyServer ).listen(8080);
 function sunnyServer( req, res){
     var pathName = Url.parse( req.url ).pathName;
 
-    res.writeHeader(200, {'Content-Type': 'test/plain'});
-    var str = '{"temp":"23", "ws":"3级"}';
-    res.write( str );
+    // res.writeHeader(200, {'Content-Type': 'test/plain'});
+    // var str = '{"temp":"23", "ws":"3级"}';
+    // res.write( str );
 
-    // res.writeHeader(200, {'Content-Type': 'application/json'});
-    // var obj = {temp:"23", ws:"3级"};
-    // res.write( JSON.stringify(obj) );
+    res.writeHeader(200, {'Content-Type': 'application/json'});
+    var obj = {temp:"23", ws:"3级"};
+    res.write( JSON.stringify(obj) );
 
     res.end();
 }
