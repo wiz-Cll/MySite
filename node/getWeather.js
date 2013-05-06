@@ -1,5 +1,7 @@
 var http = require('http');
 var Weather = require('./mongoose');
+
+var latestW = {};
 function execAtO( minutes, func ){
     var now = new Date();
     var now_min = now.getMinutes();

@@ -10,7 +10,8 @@ var weatherSchema = mongoose.Schema({
 
 var WeatherModel = mongoose.model('Weather', weatherSchema);
 
-var wInfo = new WeatherModel();
+// var date = (new Date()).valueOf();
+// var wInfo = new WeatherModel({city: 'beijing', pbTime: date, temp: 23});
 
 // wInfo.save( function(err){
 // 	if( err ){
@@ -23,7 +24,7 @@ var wInfo = new WeatherModel();
 // 			// info是一个结果集   一个数组
 // 			if( info.length !== 0){
 // 				console.log('OK, 我们来进行删除的操作');
-// 				deleteInfos();
+// 				// deleteInfos();
 // 			}
 // 		}) );
 // 	}
@@ -36,7 +37,7 @@ function deleteInfos(){
 		}
 		else{
 			console.log('貌似成功了');
-			 Weather.find( null,function( err, info ){
+			 WeatherModel.find( null,function( err, info ){
 				console.log( info );
 			})
 		}
