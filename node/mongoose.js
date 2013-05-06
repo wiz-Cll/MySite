@@ -4,14 +4,22 @@ mongoose.connect('mongodb://localhost/test');
 
 var weatherSchema = mongoose.Schema({
 	city: String,
-	temp: Number,
-	ws: Number
+	cityid: String,
+	temp: String,
+	WD: String,
+	WS: String,
+	SD: String,
+	WSE: String,
+	time: String,
+	sentTime: Date,
+	gotTime: Date,
+	isRadar: String,
+	Radar: String
 });
 
 var WeatherModel = mongoose.model('Weather', weatherSchema);
 
-// var date = (new Date()).valueOf();
-// var wInfo = new WeatherModel({city: 'beijing', pbTime: date, temp: 23});
+// var wInfo = new WeatherModel();
 
 // wInfo.save( function(err){
 // 	if( err ){
@@ -24,7 +32,7 @@ var WeatherModel = mongoose.model('Weather', weatherSchema);
 // 			// info是一个结果集   一个数组
 // 			if( info.length !== 0){
 // 				console.log('OK, 我们来进行删除的操作');
-// 				// deleteInfos();
+// 				deleteInfos();
 // 			}
 // 		}) );
 // 	}
@@ -50,9 +58,7 @@ var Weather = function( obj ){
 	}
 }
 
-// Weather.prototype.save = function(first_argument) {
-// 	// body...
-// };
+
 exports.init = function( obj ) {
 			return new WeatherModel( obj );
 		}
