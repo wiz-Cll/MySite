@@ -13,6 +13,6 @@ var server = http.createServer(function( req, res ){
 
 });
 
-server.listen(80,function(){
+server.listen(8080,function(){
 	console.log('server is listening at 80 port');
 });

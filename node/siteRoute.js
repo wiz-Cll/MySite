@@ -6,11 +6,11 @@ var path = require('path');
 var mime = require('../src/script/mime').types;
 
 
-function staticServer( req, res){
+function staticServer( req, res, basePath){
 	var pathName = url.parse( req.url ).pathname;
 	// 判断文件是否存在
 	var file2read = pathName;
-	// 如果是根目录  则添加上index
+	// 如果是目录，即应该自动读取index  则添加上index
 	if( /\/$/.test(file2read)){
 		file2read += 'index.html';
 	}
@@ -19,18 +19,8 @@ function staticServer( req, res){
 	}
 
 	// 原来给出的是/开头的，会被认为是绝对路径
-	file2read = file2read.substr(1);
-	console.log(file2read);
+	file2read = basePath + file2read.substr(1);
 
-	// 路由的一部分
-	switch( req.headers.host ){
-		case 'sunny.chenllos.com':
-			file2read = 'sunny/' + file2read;
-			break;
-		default:
-			// do nothing
-			break;
-	}
 	console.log(file2read);
 
 	fs.exists( file2read,function( exist ){
@@ -38,11 +28,13 @@ function staticServer( req, res){
 		if( exist ){
 			// 存在则读取 返回
 			fs.readFile(file2read,'binary', function( err, file ){
+
 				// 成功避免"异步"/"回调"带来的无法匹配读取的二进制和原文件名的bug
 				// 通过回调函数里面嵌一个函数,将读取时的文件路径 即文件名传过去
 				readfileCallback(err, file, file2read);
 				function readfileCallback(err, file, filename){
 					if( err ){
+						console.log( file2read + ' read failed');
 						res.writeHeader(500, {'ContentType': 'text/plain'});
 						res.write('server internal err:' + err );
 						res.end();
@@ -80,24 +72,54 @@ function staticServer( req, res){
 	// res.end();
 }
 
+function dynamicServer( req, res,basePath ){
+	res.writeHeader(200, {'content-type': 'text/plain'});
+	res.write(' dynamic in cons````');
+	res.end();
+}
 function route( req, res){
-	var urlParams = url.parse( req.url, true).query;
-	var count = 0;
-	for( var i in urlParams ){
-		if( urlParams[i] ){
-			count++;
-		}
+	// 判断是对那个分站的请求
+	var basePath = '';	
+	switch( req.headers.host ){
+		case 'sunny.chenllos.com':
+			basePath = 'sunny/';
+			break;
+		default:
+			basePath = './';
+			break;
 	}
-	console.log( urlParams === {} ); //false
-	// 通过解析url来确定 是否含有查询参数
-	if( !count ){
-		staticServer( req, res );
+
+	// 判断请求是动态还是静态  
+	// 貌似现在这个不可靠啊···比如带有时间戳的文件请求
+
+	var urlParams = url.parse( req.url, true).query;
+	// 如果query为空 说明没有参数  是静态的请求
+	if( isEmpty( urlParams ) ){
+		staticServer( req, res, basePath );
 	}
 	else{
-		console.log( 'why here....');
-		res.writeHeader(404,{'Content-Type': 'text/plain'});
-		res.write('no found...');
-		res.end();
-	}	
+		dynamicServer( req, res, basePath );
+	}
+
+	// // 用新的判断方法： 有没有.
+	// if()
 }
 exports.route = route;
+
+
+
+
+
+
+
+
+
+
+function isEmpty( obj ){
+	for( var i in obj){
+		// 可以读取属性 说明是非空
+		return false;
+	}
+	return true;
+
+}

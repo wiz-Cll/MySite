@@ -161,3 +161,15 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+*.xml
+
+*.xml
+
+*.xml
+
+.idea/jsLibraryMappings.xml
+
+.idea/workspace.xml
+
+.idea/jsLibraryMappings.xml
