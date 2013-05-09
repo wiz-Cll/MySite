@@ -1,0 +1,44 @@
+aside{
+	float: left;
+	width: 200px;
+	height: 700px;
+	background: #eee;
+}
+section{
+	/*width: 10;*/
+	height: 700px;
+	margin-left: 200px;
+	zoom: 1;
+	background: #ccc;
+}
+
+
+aside ul{
+	list-style: square;
+	color: #accded;
+	padding: 0;
+	margin: 0;
+}
+aside ul li{
+	/*margin: 0 0 0.5em 0;*/
+	margin: 0.5em 0 0 0;
+	padding: 0;
+	height: 1.5em;
+	background: #ddd;
+}
+
+section article{
+	width: 300px;
+	height: auto;
+	min-height: 4em;
+	margin: 0 0 2em 0;
+	padding: 0;
+	background: #ddd;
+}
+
+article p{
+	background: #ccddfd;
+	line-height: 2em;
+	font-size: 1.5em;
+	text-decoration: underline;
+}

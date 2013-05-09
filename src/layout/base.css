@@ -1,0 +1,9 @@
+html, body,header,nav,aside,section, article, footer{
+	box-sizing: border-box;
+}
+html, body{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	font-size: 1em;
+}
