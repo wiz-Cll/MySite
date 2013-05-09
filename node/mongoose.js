@@ -1,6 +1,14 @@
 var mongoose = require('mongoose');
 
+var db = mongoose.connection;
+
 mongoose.connect('mongodb://localhost/chenllos');
+ 
+ 
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+    console.log('connect OK');
+});
 
 //--------------- schemas -------------------
 // 实时天气
@@ -13,10 +21,13 @@ var rtWeatherSchema = mongoose.Schema({
 	SD: String,
 	WSE: String,
 	time: String,
-	sentTime: Date,
-	gotTime: Date,
 	isRadar: String,
-	Radar: String
+	Radar: String,
+
+	// sentTime: Date,
+	// gotTime: Date,
+	sentTime: String,
+	gotTime: String
 });
 
 // 六天天气
@@ -103,7 +114,12 @@ var sdWeatherSchema = mongoose.Schema({
 	st6: String,
 	index_cl: String,
 	index_ls: String,
-	index_ag: String
+	index_ag: String,
+	
+	// sentTime: Date,
+	// gotTime: Date
+	sentTime: String,
+	gotTime: String
 });
 
 // 博客文章的schema
