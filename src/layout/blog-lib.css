@@ -1,5 +1,9 @@
  /*主要还是使用float来实现多栏布局（inline-block太难用了···）*/
 /* 细节中的timeline  用ul100%宽度 + line relative而且left为负值来实现的    不失语义性  又可以实现自己未来计划的响应式*/
+html{
+    margin: 0;
+    padding: 0;
+}
 body{
     margin: 0;
     padding: 0;
@@ -7,6 +11,8 @@ body{
     height: 100%;
     overflow: auto;
     font-family: "Microsoft Yahei" "times";
+    font-size: 0.625em;
+    /* 设置body的基准字体为10px*/
     background: #eee;
 }
 h1,h2,h3,h4,h5{
@@ -18,16 +24,15 @@ p{
 	margin: 0;
 	padding: 0;
   	vertical-align: baseline;
-	font: 0.8em/1.5 "Microsoft Yahei";
-
+	font: 1.6em/1.5 "Microsoft Yahei";
 }
 
 header{
     position: fixed;
     width: 100%;
-    height: 2em;
+    height: 3.6em;
     text-align: center;
-    background: #3B5998;
+    background: #3c8282;
     z-index: 1000;
 }
 
@@ -42,36 +47,44 @@ header{
     float: left;
     height: 100%;
 }
-.nav{
+nav{
     float: right;
     height: 100%;
 }
-.nav ul{
+nav ul{
     /*float: right;*/
     margin: 0;
     padding:0;
     list-style: none;
     vertical-align: center;
-    font-size: 1em;
     box-sizing: border-box;
 }
-.nav li{
+nav li{
     float: left;
     margin: 0 0 0 0.5em;
     min-width: 5em;
-    height: 2em;
-    padding: 0.5em 0;
+    height: 3.6em;
+
+    padding: 0.8em 1em;
+    margin: 0 2px;
+
     box-sizing: border-box;
     text-align: center;
     overflow: hidden;
+
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.25s ease-in-out;
     /*outline: 1px solid red;*/
     /*font-size: */
 }
 
-.nav li a{
+nav li a{
     display: block;
-    font-size: 1em;
-    line-height: 1em;
+    font-size: 2em;
+    line-height: 100%;
     margin: 0;
     padding: 0;
     vertical-align: baseline;
@@ -84,16 +97,21 @@ header{
             transition: all 0.15s ease-out 0.05s;
 }
 
-.nav li:hover a{
-    margin-top: -1.5em;
+nav li:hover a{
+    margin-top: -1.6em;
 }
-.nav li a:after{
+nav li:hover{
+    background: #d96464;
+}
+
+nav li a:after{
     content: attr(data-after);
     display: block;
-    margin-top: 0.5em;
+    margin-top: 0.6em;
     font-size: 1em;
     line-height: 1em;
-    color: #accded;
+    color: #074e5e;
+
 }
 
 

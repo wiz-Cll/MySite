@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>社交图标的hover聚焦</title>
+		<!-- 兼容性： -->
+		<!-- 由diaoplay: table-cell 决定， gte IE8 -->
+		<!-- 还有transition。。。应该可以用脚本来兼容 -->
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script>
+
+		</script>
+		<style>
+			.ctn{
+			  height: 200px;
+			  width: 300px;
+			  background: #2d2e34;
+			  display:table-cell;
+			  vertical-align: middle;
+			  text-align: center;
+			  /* padding:0 50%; */
+			}
+
+			.autoScaleContainer{
+			  margin: 0 auto;
+			  box-sizing: content-box;
+			  border-radius: 50% 50%;
+			  /*不要使用autocscale的padding来实现了，会出现img的闪动，因为padding改变后img的位置会重新计算，而hover后改变img的margin，即便autoscale闪动也不会明显  因为它是一直在动的*/
+				
+			  /*原网页的实现方式是这样的*/
+			  /*-webkit-transform: scale3d(0.75, 0.75, 1);*/
+			  /*ok... 我的这个设计至少可以作为一个lowpatch*/
+			  /*padding: 50px;*/
+			  border: 2px solid #666;
+			  display:inline-block;
+			  
+			  /*-webkit-transition: all 0.8s ease-in-out;*/
+			}
+			img{
+			  width: 72px;
+			  height: 72px;
+			  border-radius: 12px;
+			  margin: 50px;
+			  -webkit-transition: all 0.6s ease-in-out;
+			  -moz-transtion: all 0.6s ease-in-out;
+			  -ms-transtion: all 0.6s ease-in-out;
+			  -o-transtion: all 0.6s ease-in-out;
+			  transtion: all 0.6s ease-in-out;
+			}
+			.ctn:hover img{
+			  margin: 20px;
+			  /*border: 2px solid #aaa;*/
+			}
+			.ctn:hover autoScaleContainer{
+			  /*margin: 10px;*/
+			  border: 2px solid #aaa;
+			}
+
+
+		</style>
+	</head>
+	<body>
+		<div class="ctn">
+
+		    <div class="autoScaleContainer">
+		    	<img src="http://iosicongallery.com/wp-content/uploads/2013/03/mzl.gyohzkvl-175x175.png" />
+		  
+		    </div>
+  
+		</div>
+	</body>
+</html>
