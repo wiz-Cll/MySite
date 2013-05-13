@@ -1,9 +1,11 @@
 var url = require('url');
 var fs = require('fs');
 var path = require('path');
+
 // var querystring = require('querystring');
 
 var mime = require('../src/script/mime').types;
+var weather = require('./Weather');
 
 
 function staticServer( req, res, basePath){
@@ -35,7 +37,7 @@ function staticServer( req, res, basePath){
 				function readfileCallback(err, file, filename){
 					if( err ){
 						console.log( file2read + ' read failed');
-						res.writeHeader(500, {'ContentType': 'text/plain'});
+						res.writeHeader(500, {'Content-Type': 'text/plain'});
 						res.write('server internal err:' + err );
 						res.end();
 					}
@@ -72,41 +74,101 @@ function staticServer( req, res, basePath){
 	// res.end();
 }
 
-function dynamicServer( req, res,basePath ){
-	res.writeHeader(200, {'content-type': 'text/plain'});
-	res.write(' dynamic in cons````');
-	res.end();
+function dynamicServer( req, res ){
+	// console.log( res );
+
+	var reqQuery = url.parse( req.url, true).query;
+	console.log( '在siteRoute中： querystring是： ');
+	console.log( reqQuery );
+	if( reqQuery.type ){
+		weather.res( reqQuery.type,reqQuery.cityid, res );
+	}
+	else{
+		console.log( arguments.callee.name + '   请求的不是天气')
+	}
+	// try{
+	// 	switch( reqQuery.type ){
+	// 		case 'rt':
+	// 			console.log('请求查询实时天气------');
+	// 			weather.resRT( reqQuery.cityid, res );
+	// 			return false;
+	// 		case 'sd':
+	// 			console.log('请求查询六天天气------');
+	// 			weather.resSD( reqQuery.cityid, res );
+	// 			return false;
+	// 	}
+	// }
+	// catch( err ){
+	// 	console.log( '在siteRoute中：请求类型不是weather')
+	// }
+
 }
+
 function route( req, res){
 	// 判断是对那个分站的请求
-	var basePath = '';	
-	switch( req.headers.host ){
+	var basePath = '';
+	var host = req.headers.host;
+	var pathname = url.parse( req.url ).pathname
+	console.log( ' 在route中 请求头的host为： ' + host);
+	console.log( ' 在route中 请求path为： ' +  pathname );
+	switch( host ){
 		case 'sunny.chenllos.com':
 			basePath = 'sunny/';
 			break;
+		// case 'sunny.chenllos.com':
+		// 	basePath = 'sunny/';
+		// 	break;
 		default:
 			basePath = './';
 			break;
 	}
 
+	
 	// 判断请求是动态还是静态  
 	// 貌似现在这个不可靠啊···比如带有时间戳的文件请求
 
 	var urlParams = url.parse( req.url, true).query;
 	// 如果query为空 说明没有参数  是静态的请求
 	if( isEmpty( urlParams ) ){
-		staticServer( req, res, basePath );
+		/*
+		 * 在生产环境下
+		 * 如果通过chenllos.com/sunny访问sunny的目录，则进行重定向;
+		 * 
+		 * 
+		*/
+		if( pathname.indexOf('/sunny') != 0 ){
+			console.log( arguments.callee.name + '   不符合跳转的判断: pathname中的sunny位置不对');
+			console.log( '在siteRoute中：------------使用静态服务组件------------');
+			staticServer( req, res, basePath );
+		}
+		else{
+			if( host.indexOf('127.0.0.1') < 0 ){
+				console.log( arguments.callee.name + '   符合跳转的判断, 即将进行跳转')
+
+				res.writeHead(302, {
+				  'Location': 'http://sunny.chenllos.com'
+				  //add other headers here...
+				});
+				res.end();
+				return false;
+			}
+			else{
+				console.log( arguments.callee.name + '   不符合跳转的判断, 不进行跳转')
+				// do nothing
+			}
+		}
+		
 	}
 	else{
-		dynamicServer( req, res, basePath );
+		console.log( '在siteRoute中：----------使用  dongtai 服务组件------------');
+
+		dynamicServer( req, res );
 	}
 
 	// // 用新的判断方法： 有没有.
 	// if()
 }
 exports.route = route;
-
-
 
 
 
