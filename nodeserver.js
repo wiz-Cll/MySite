@@ -17,5 +17,5 @@ var server = http.createServer(function( req, res ){
 });
 
 server.listen(8800,function(){
-	console.log('在nodeserver中, server is listening at 8080 port');
+	console.log('在nodeserver中, server is listening at 8800 port');
 });
