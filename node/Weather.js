@@ -3,9 +3,10 @@ var Url = require('url');
 var mModel = require('./mongoose').model;
 // var City = require('./City');
 
-var latestW = [];
 
-var cityId = '101010100';
+// var cityId = '101010100';
+var cachedCityW = {};
+var cachedCityID = ['101010100'];
 
 // 两个用来记录的setTimeout的id
 var stID_rt;
@@ -35,7 +36,7 @@ function execAtO( minutes, func, blFirst, blRetry, stID ){
     
     // 先不管后几个参数  合适就执行！
     if(  fitType( minutes, now_min )  ){
-        console.log   ('合适，立即执行\n');
+        console.log('在weather中 合适，立即执行\n');
         victory = func();
         next = 60 - now_sec + ( minutes - 1 )*60;
         stID = setTimeout( function(){ execAtO( minutes, func, false, blRetry, stID )}, next*1000);
@@ -51,7 +52,7 @@ function execAtO( minutes, func, blFirst, blRetry, stID ){
             // donothing
         }
         next = ( getNextO( minutes, now_min ) - now_min - 1 ) * 60 + (60-now_sec);
-        console.log('不合适，将在 '+ next + ' 秒后执行\n');
+        console.log(' 在weather中  不合适，将在 '+ next + ' 秒后执行\n');
         stID = setTimeout( function(){ execAtO( minutes, func, false, blRetry, stID)}, next*1000);
     }
     
@@ -93,191 +94,212 @@ function execAtO( minutes, func, blFirst, blRetry, stID ){
 }
 
 
-function getRTWeather(){
-    console.log(' 获取实时天气信息的函数启动~ ');
-    var localCityId = cityId;
-    var sentTime = (new Date()).valueOf();
-    var info='';
+function getRTWeather( cityId, callback ){
+    console.log('在weather中  获取实时天气信息的函数启动~ ');
+    var type = 'rt';
+    if( cityId ){
+       getRT( cityId );
+    }
+    else{
+        for( var i =0, len = cachedCityID.length; i< len; i++ ){
+            getRT( cachedCityID[i] );
+        } 
+    }
 
-    var reqUrl = 'http://www.weather.com.cn/data/sk/'+ localCityId + '.html';
-    console.log( '请求天气的地址是： ' + reqUrl );
+    function getRT( innerID ){
+        var localCityId = innerID;
+        var sentTime = (new Date()).valueOf();
+        var info='';
 
-    http.get( reqUrl, function( res ){
-        res.on('data', function(data){
-            info += data;
+        var reqUrl = 'http://www.weather.com.cn/data/sk/'+ localCityId + '.html';
+        console.log( '在weather中 请求天气的地址是： ' + reqUrl );
+
+        http.get( reqUrl, function( res ){
+             callbackGetData( res, type,  localCityId );
         });
-        res.on('end',function(){
-            // console.log( info);
-            callbackGetRTWeather(info, localCityId);
-        });
-    });
-
-
-
-    function callbackGetRTWeather( info, localCityId){
-        var gotTime = (new Date()).valueOf();
-        console.log( '此时获取了天气信息： ' + gotTime );
-        // console.log( info );
-        // 解析串-—》对象  方式有问题
-        // 不是方式有问题  是info的初始化  应该为空串  而不是undefined
-        try{
-            var wObj = JSON.parse( info ).weatherinfo;
-        }
-        catch( err ){
-            var info = info.replace('undefined','');
-            // console.log( info );
-            var wObj = JSON.parse( info ).weatherinfo;
-        }
-
-        // 格式化时间  将获得的仅有小时分钟的时间转换为有年月日 时分的时间
-        // 方便前端接收后的差时计算
-        // 也便于后台辨别是否发布了更新的天气信息
-        if( wObj.time.length === 4){
-            wObj.time = '0' + wObj.time;
-        }
-        wObj.time.replace(':',' ');
-
-        var date = new Date();
-        today = date.getDate();
-        var month = date.getMonth();
-        if( month.length === 1 ){
-            month = '0' + (Number(month)+1);
-        }
-        var year = Number(date.getYear()) + 1900;
-        today = year + ' ' + month + ' ' + today;
-        wObj.time = today + ' ' + wObj.time;
-
-        // console.log( wObj.time + '\n' + latestW.time );
-
-        // 只有在获取的天气信息的发布时间大于之前存储的“最新天气”时，才进行新实例化对象和存储的操作
-        if( notCachedYet(latestW, localCityId, wObj) ){
-            latestW[localCityId] = wObj;
-
-            latestW[localCityId].sentTime = sentTime;
-            latestW[localCityId].gotTime = gotTime;
-
-            // console.log( latestW[localCityId] );
-            // console.log( mModel );
-
-            var wEntity = new mModel.rtWeather( latestW[localCityId] );
-
-            // console.log( '实例化的天气实体： ----' + wEntity );
-
-            wEntity.save( function(err){
-                if( err ){
-                    console.log('发生错误：' + err );
-                }
-                else{
-                    // console.log('保存成功!');
-                    // Weather.model.find( showAllInfo );
-                }
-            });
-        }
-        else{
-            // console.log('天气信息没有更新...')
-        }
     }
-
-
-    function showAllInfo( err, result ){
-        if( !err ){
-            // console.log( result );
-        }
-        else{
-            console.log('发生错误： '+ err);
-        }
-    }
-
-    function notCachedYet( latestW, cityId,  newW){
-        if( !latestW[cityId] || !latestW[cityId].time || latestW[cityId].time < newW.time ){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+    
+    
 }
 
 
-function getSDWeather(){
+function getSDWeather( cityId ){
     console.log('获取6天的天气');
-    var localCityId = cityId;
-    // var localCityId = '101010100';
-
-    var sentTime = (new Date()).valueOf();
-    var info;
-
-    var reqUrl = 'http://m.weather.com.cn/data/'+ localCityId + '.html';
-    console.log(reqUrl);
-
-    http.get( reqUrl, function( res ){
-        res.on('data',function( data ){
-            info += data;
-            console.log('开始获取');
-        });
-        res.on('end', function(){
-            console.log('获取成功');
-            callBackGetSDWeather( info, localCityId );
-        });
-    });
-
-    function callBackGetSDWeather( info, cityId ){
-        // 取值 方便排序
-        var gotTime = (new Date()).valueOf();
-        // console.log( '天气的string是：  ' + info );
-        try{
-            var wObj = JSON.parse( info ).weatherinfo;
-        }
-        catch( err ){
-            var info = info.replace('undefined','');
-            // console.log( info );
-            var wObj = JSON.parse( info ).weatherinfo;
-        }
-        console.log( wObj );
-        // 加一层判断  是否为正确的city  是否为当天的天气
-        console.log( wObj.date_y );
-        console.log( gotTime.toLocaleDateString() );
-
-        if( wObj.cityid === cityId &&  wObj.date_y === toChineseDate(gotTime) ){
-            // 成功  则保存
-            wObj.sentTime = sentTime;
-            wObj.gotTime = gotTime;
-            wEntity = new mModel.sdWeather( wObj );
-            wEntity.save(null, function(err){
-                if( !err ){
-                    console.log('保存新的sdweather成功！');
-                    return true;
-                }
-                else{
-                    console.log('保存新的sdweather失败....');
-                }
-            })
-        }
-        else{
-            // 获取失败  就返回false
-            console.log('失败···')
-            return false;
+    var type = 'sd';
+    if( cityId ){
+        getSD( cityId )
+    }
+    else{
+        for( var i =0, len = cachedCityID.length; i< len; i++ ){
+            getSD( cachedCityID[i] );
         }
     }
+    
+
+    function getSD( innerID ){
+        var localCityId = innerID;
+        var sentTime = (new Date()).valueOf();
+        var info='';
+
+        var reqUrl = 'http://m.weather.com.cn/data/'+ localCityId + '.html';
+        console.log( '在weather中 请求天气的地址是： ' + reqUrl );
+
+        http.get( reqUrl, function( res ){
+             callbackGetData( res, type, sentTime, localCityId );
+        });
+    }
+    
 }
 
 
 // @func 查询数据库中的天气信息 并返回
-function resRTWeather( cityId, res ){
+function resWeather( type, cityId, res ){
+    console.log( '在weather中  有请求过来了，要做出相应 ------ ' + cityId);
     // 查询最新
     // 返回数据
-    var queryRes = queryMax( mModel.rtWeather, 'gotTime' );
+    //  var condition = { cityid: cityId };
+    //  if( type === 'rt'){
+    //      var queryRes = queryMax( mModel.rtWeather, condition, 'gotTime',writeRes, res );
+    //      // 这里还是回调  也就是说应该在查询结果的回调中对请求作出相应
+
+    //  }
+    //  else{
+    //     var queryRes = queryMax( mModel.sdWeather, condition, 'gotTime',writeRes, res );
+    // }
+
+   // 采用空间换时间后的作法：
+    if( cachedCityW.cityId.type ){
+        writeRes( cachedCityW.cityId.type, res);
+    }
+    else{
+        if( type === 'rt' ){
+            getRTWeather( cityId, function(){
+                resWeather( type, cityId, res )
+            });
+        }
+        else{
+            getSDWeather( cityId, function(){
+                resWeather( type, cityId, res )
+            });
+        }
+    }
+
+    return false;
+}
+
+
+
+
+
+
+function callbackGetData( res,  type, sentTime, localCityId, callback ){
+    res.on('data', function(data){
+        info += data;
+    });
+    res.on('end',function(){
+        // console.log( '在weather中'  + info);
+        callbackGetRTWeather(info, type, sentTime, localCityId, callback);
+    });
+}
+
+function callbackGetRTWeather( info, type, sentTime, localCityId, callback){
+    var gotTime = (new Date()).valueOf();
+    console.log( '在weather中  此时获取了天气信息： ' + gotTime );
+    // console.log( info );
+    // 解析串-—》对象  方式有问题
+    // 不是方式有问题  是info的初始化  应该为空串  而不是undefined
+    try{
+        var wObj = JSON.parse( info ).weatherinfo;
+    }
+    catch( err ){
+        var info = info.replace('undefined','');
+        console.log( info );
+        var wObj = JSON.parse( info ).weatherinfo;
+    }
+
+    // 一下函数不需要了：采用空间换时间的方法 将已存在的时间缓存在内存里
+
+    // 格式化时间  将获得的仅有小时分钟的时间转换为有年月日 时分的时间
+    // 方便前端接收后的差时计算
+    // 也便于后台辨别是否发布了更新的天气信息
+    // if( wObj.time.length === 4){
+    //     wObj.time = '0' + wObj.time;
+    // }
+    // wObj.time.replace(':',' ');
+
+    // var date = new Date();
+    // today = date.getDate();
+    // var month = date.getMonth();
+    // if( month.length === 1 ){
+    //     month = '0' + (Number(month)+1);
+    // }
+    // var year = Number(date.getYear()) + 1900;
+    // today = year + ' ' + month + ' ' + today;
+    // wObj.time = today + ' ' + wObj.time;
+
+
+    // 只有在获取的天气信息的发布时间大于之前存储的“最新天气”时，才进行新实例化对象和存储的操作
+    if( notCachedYet('rt', localCityId, wObj) ){
+        console.log( arguments.callee.name + '   天气是新的' );
+        // 进行存储到数据库的操作
+        wObj.sentTime = sentTime;
+        wObj.gotTime = gotTime;
+
+        var wEntity = new mModel.rtWeather( wObj );
+
+        wEntity.save( function(err){
+            if( err ){
+                console.log('在weather中 发生错误：' + err );
+            }
+            else{
+                console.log('保存成功!');
+                // mModel.rtWeather.find( showAllInfo );
+            }
+        });
+    }
+    else{
+        console.log('天气信息没有更新...')
+    }
+
+    callback();
+}
+
+
+function showAllInfo( err, result ){
+    if( !err ){
+        console.log( result );
+    }
+    else{
+        console.log('在weather中  发生错误： '+ err);
+    }
+}
+
+
+
+
+
+
+
+// 书写响应，作为queryMax的回调传入
+function writeRes( queryRes, res ){
+    console.log( arguments.callee.name+ '^^^^^^^^^^^^^^^');
+    // console.log( res );
     if( queryRes ){
-        res.writeHeader(200, {'content-type': 'json/application'});
+        console.log( '在weather中， 查询的结果是：%……&   ');
+        console.log( queryRes );
+        res.writeHeader(200, {'content-type': 'application/json;charset=UTF-8'});
+        // res.writeHeader(200, {'content-type': 'text/plain;charset=UTF-8'});
         var resObj = {
             return_code: 200,
             weather: queryRes
         }
+        // 写json出了问题····为什么在content-type为json.application的时候  返回的是一个文件呢
         res.write( JSON.stringify( resObj ) );
+        // res.write( JSON.stringify( { cityid: 'beijing', temp: '32'} ) );
         res.end();
     }
     else{
-        console.log('查询实时天气时出现错误 ');
+        console.log('在weather中 查询实时天气时出现错误 ');
         res.writeHeader(500, {'content-type': 'json/application'});
         var resObj = {
             return_code: 500,
@@ -286,22 +308,119 @@ function resRTWeather( cityId, res ){
         res.write( JSON.stringify( resObj ) );
         res.end();
     }
+}
+
+
+// 将原来不存在数据库中的cityid添加到city的列表里
+function writeIntoDesire( args ){
+    console.log( arguments.callee.name + '  出现没有的城市');
+    cachedCity.push( args[1].cityid );
+    // getWeather();
     return false;
+}
+
+
+// 还没有在数据库里面存储
+function notCachedYet( type, cityId,  newW ){
+    if( cachedCityW[ cityId ]  ){
+        if( cachedCityW[cityId][type].time === newW.time || cachedCityW[cityId][type].date_y === newW.date_y){
+            return false;
+        }
+        else{
+            cachedCityW[cityId][type] = newW;
+            cachedCityID.push( cityId );
+            return true;
+        }
+    }
+    else{
+        cachedCityW[cityId][type] = newW;
+        cachedCityID.push( cityId );
+        return true;
+    }
+    // var model = type + 'Weather';
+    // var field = '';
+    // if( type === 'rt'){
+    //     field = 'time';
+    // }
+    // else{
+    //     field = 'date_y';
+    // }
+    // queryMax( mModel[model], { cityid: cityId }, field, isUpdated, null, notInDB );
+
+    function isUpdated( existW ){
+        switch( type ){
+            case 'rt':
+              if( existW.time !== newW.time ){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+                break;
+            case 'sd':
+                if( existW.date_y !== newW.date_y ){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+                break;
+            default:
+                console.log( arguments.callee.name + '  进入了daefault选项');
+                return true;         
+        }
+    }
+
+    function notInDB( args ){
+        return true;
+    }
 }
 
 
 // 将基础函数放在utility文件中 方便各处调用
 // 如日期格式化函数，respond函数（ 传入响应码和对象，以及mime格式 ）
 
-function queryMax( model, field ){
-    model.find().sort( field ).exec( function( err, resu){
+function queryMax( model, condition, field, callback1,  res, callback2){
+
+    console.log( arguments.callee.name+ '>>>>>>>>>>>>>>>>');
+    console.log( arguments );
+    // console.log( res );
+    model.find( condition ).sort( field ).exec( function( err, resu){
         if( !err ){
-            return resu.pop();
+            if( resu.length > 0 ){
+                try{
+                    callback1( resu.pop(), res );
+                }
+                catch( err ){
+                    console.log( arguments.callee.name + ' 查询最大值时出错，而且没有callback函数')
+                }
+            }
+            else{
+                // 在查询到的结果集为空时执行callback2
+                try{
+                    callback2( arguments );
+                }
+                catch( err ){
+                    console.log( arguments.callee.name + '查询最大值时出错，而且没有callback2');
+                }
+                return false;
+            }
+            // console.log( resu.pop() );
         }
         else{
+            // 在发生错误时执行callback2
+            // try{
+            //     callback2( arguments );
+            // }
+            // catch( err ){
+            // }
+            console.log( arguments.callee.name + '查询最大值时出错，而且没有callback2');
+
             return false;
         }
+    });
 }
+
 function toChineseDate( dateObj ){
     var year = ( dateObj.getYear() + 1900 )+'年';
     var month = ( dateObj.getMonth() + 1 )+'月';
@@ -310,25 +429,14 @@ function toChineseDate( dateObj ){
 }
 
 
+// if( test )
+// execAtO(10, getRTWeather );
+// mModel.rtWeather.find( {cityid: '10934435'}, showAllInfo );
 
-// var query = mModel.rtWeather.find([]);
-// query.desc( 'gotTime' );
-// query.run( function( err, resoult ){
-//     console.log( resoult[0] );
-// })
-mModel.rtWeather.find().sort('gotTime').exec( function( err, resu){
-    console.log( resu.pop() );
-    return false;
-});
+// getRTWeather( cityId );
+// getSDWeather( cityId );
 
-
-// query.sort()
-// getRTWeather();
-// getSDWeather();
-// execAtO(5, getRTWeather );
-// execAtO(1440, getRTWeather );
-
-
-
-// exports.getRT = getRTWeather();
-// exports.getSD = getSDWeather();
+exports.getRT = getRTWeather;
+exports.getSD = getSDWeather;
+exports.res = resWeather;
+// exports.resSD = getSDWeather();
