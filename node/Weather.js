@@ -1,6 +1,7 @@
 var http = require('http');
 var Url = require('url');
 var mModel = require('./mongoose').model;
+var cnweather = require('../src/script/cnweathercitys').model;
 // var City = require('./City');
 
 
@@ -26,7 +27,7 @@ function initCache(){
     }
    
 
-    function initCacheW( cityids ){
+    function initCacheW( cityids){
         for( var i =0, len = cityids.length; i<len; i++){
             var localCityId = cityids[i];
             console.log( localCityId );
@@ -64,7 +65,11 @@ function initCache(){
 }
 
 initCache();
-// setTimeout( function(){ console.log( cachedCityW )},3000);
+// 暂时通过设置timer来实现回调···
+setTimeout( function(){
+        execAtO(5, getRTWeather, true );
+        execAtO(1440, getSDWeather, true );
+    },3000);
 
 // http.createServer( sunnyServer ).listen(8080);
 
@@ -161,18 +166,30 @@ function getRTWeather( cityId, callback ){
 
     function getRT( innerID, callback ){
         var localCityId = innerID;
-        var sentTime = (new Date()).valueOf();
-        // var info='';
+        if( cnweather[localCityId] ){
+            var sentTime = (new Date()).valueOf();
+            // var info='';
 
-        var reqUrl = 'http://www.weather.com.cn/data/sk/'+ localCityId + '.html';
-        console.log( '在weather中 请求天气的地址是： ' + reqUrl );
+            var reqUrl = 'http://www.weather.com.cn/data/sk/'+ localCityId + '.html';
+            console.log( '在weather中 请求天气的地址是： ' + reqUrl );
 
-        http.get( reqUrl, function( res ){
-             callbackGetData( res, type, sentTime, localCityId, callback );
-        });
+            http.get( reqUrl, function( res ){
+                 callbackGetData( res, type, sentTime, localCityId, callback );
+            });
+        }
+        else{
+            res.writeHeader(200,{'content-type': 'text/plain;charset=utf-8'});
+            var resObj = {
+                return_code: 404,
+                msg: '天气资源库中没有该城市'
+            }
+            res.write( JSON.stringify( resObj ));
+            res.end();
+            return false;
+        }
+        
     }
-    
-    
+     
 }
 
 
@@ -191,20 +208,35 @@ function getSDWeather( cityId, callback ){
 
     function getSD( innerID, callback ){
         var localCityId = innerID;
-        var sentTime = (new Date()).valueOf();
-        
+            if( cnweather[localCityId] ){
+            var sentTime = (new Date()).valueOf();
+            
 
-        var reqUrl = 'http://m.weather.com.cn/data/'+ localCityId + '.html';
-        console.log( '在weather中 请求天气的地址是： ' + reqUrl );
+            var reqUrl = 'http://m.weather.com.cn/data/'+ localCityId + '.html';
+            console.log( '在weather中 请求天气的地址是： ' + reqUrl );
 
-        http.get( reqUrl, function( res ){
-             callbackGetData( res, type, sentTime, localCityId, callback );
-        });
+            http.get( reqUrl, function( res ){
+                 callbackGetData( res, type, sentTime, localCityId, callback );
+            });
+        }
+        else{
+            res.writeHeader(200,{'content-type': 'text/plain;charset=utf-8'});
+            var resObj = {
+                return_code: 404,
+                msg: '天气资源库中没有该城市'
+            }
+            res.write( JSON.stringify( resObj ));
+            res.end();
+            return false;
+        }
     }
     
 }
 
 
+function chkCityExist( cityid ){
+
+}
 
 
 function callbackGetData( res,  type, sentTime, localCityId, callback ){
@@ -283,11 +315,20 @@ function callbackGetWeather( info, type, sentTime, localCityId, callback){
         });
     }
     else{
+        // 由于获取六天天气的函数一天只执行一次，只发布一次，所以应该在0点过后获取，而且一直重试，直到最新的发布并获取来了
+        // 而一旦获取了最新的  下面的retry就不会执行了
+        if( type === 'sd'){
+            retrySD( callback );
+        }
         console.log('天气信息没有更新...')
     }
 
     if( callback ){
         callback();
+    }
+
+    function retrySD(){
+        setTimeout( function(){ getSDWeather( localCityId, callback ) }, 5*60*1000);
     }
 }
 
@@ -429,6 +470,7 @@ function notCachedYet( type, cityId,  newW ){
     // }
     // queryMax( mModel[model], { cityid: cityId }, field, isUpdated, null, notInDB );
 
+    // 下面的函数暂时用不到
     function isUpdated( existW ){
         switch( type ){
             case 'rt':
@@ -513,13 +555,11 @@ function toChineseDate( dateObj ){
 
 // if( test )
 
-// execAtO(5, getRTWeather, true );
-// execAtO(1440, getSDWeather, true );
 
 // mModel.rtWeather.find( {cityid: '10934435'}, showAllInfo );
 
 // getRTWeather( cityId );
-getSDWeather( '101010100' );
+// getSDWeather( '101010100' );
 
 exports.getRT = getRTWeather;
 exports.getSD = getSDWeather;

@@ -137,7 +137,7 @@ function route( req, res){
 		 * 
 		*/
 		if( pathname.indexOf('/sunny') != 0 ){
-			console.log( arguments.callee.name + '   不符合跳转的判断: pathname中的sunny位置不对');
+			console.log( arguments.callee.name + '   不符合跳转的判断: pathname不是/sunny...');
 			console.log( '在siteRoute中：------------使用静态服务组件------------');
 			staticServer( req, res, basePath );
 		}
