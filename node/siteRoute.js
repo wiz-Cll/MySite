@@ -78,13 +78,13 @@ function dynamicServer( req, res ){
 	// console.log( res );
 
 	var reqQuery = url.parse( req.url, true).query;
-	console.log( '在siteRoute中： querystring是： ');
-	console.log( reqQuery );
+	// console.log( '在siteRoute中： querystring是： ');
+	// console.log( reqQuery );
 	if( reqQuery.type ){
 		weather.res( reqQuery.type,reqQuery.cityid, res );
 	}
 	else{
-		console.log( arguments.callee.name + '   请求的不是天气')
+		// console.log( arguments.callee.name + '   请求的不是天气')
 	}
 	// try{
 	// 	switch( reqQuery.type ){
@@ -109,8 +109,8 @@ function route( req, res){
 	var basePath = '';
 	var host = req.headers.host;
 	var pathname = url.parse( req.url ).pathname
-	console.log( ' 在route中 请求头的host为： ' + host);
-	console.log( ' 在route中 请求path为： ' +  pathname );
+	// console.log( ' 在route中 请求头的host为： ' + host);
+	// console.log( ' 在route中 请求path为： ' +  pathname );
 	switch( host ){
 		case 'sunny.chenllos.com':
 			basePath = 'sunny/';
@@ -137,13 +137,13 @@ function route( req, res){
 		 * 
 		*/
 		if( pathname.indexOf('/sunny') != 0 ){
-			console.log( arguments.callee.name + '   不符合跳转的判断: pathname不是/sunny...');
-			console.log( '在siteRoute中：------------使用静态服务组件------------');
+			// console.log( arguments.callee.name + '   不符合跳转的判断: pathname不是/sunny...');
+			// console.log( '在siteRoute中：------------使用静态服务组件------------');
 			staticServer( req, res, basePath );
 		}
 		else{
 			if( host.indexOf('127.0.0.1') < 0 ){
-				console.log( arguments.callee.name + '   符合跳转的判断, 即将进行跳转')
+				// console.log( arguments.callee.name + '   符合跳转的判断, 即将进行跳转')
 
 				res.writeHead(302, {
 				  'Location': 'http://sunny.chenllos.com'
@@ -153,14 +153,14 @@ function route( req, res){
 				return false;
 			}
 			else{
-				console.log( arguments.callee.name + '   不符合跳转的判断, 不进行跳转')
+				// console.log( arguments.callee.name + '   不符合跳转的判断, 不进行跳转')
 				// do nothing
 			}
 		}
 		
 	}
 	else{
-		console.log( '在siteRoute中：----------使用  dongtai 服务组件------------');
+		// console.log( '在siteRoute中：----------使用  dongtai 服务组件------------');
 
 		dynamicServer( req, res );
 	}
