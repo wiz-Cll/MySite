@@ -76,16 +76,28 @@ function staticServer( req, res, basePath){
 
 function dynamicServer( req, res ){
 	// console.log( res );
-
+	var pathname = url.parse( req.url, true).pathname;
 	var reqQuery = url.parse( req.url, true).query;
 	console.log( '在siteRoute中： querystring是： ');
 	console.log( reqQuery );
-	if( reqQuery.type ){
-		weather.res( reqQuery.type,reqQuery.cityid, res );
+	switch( pathname ){
+		case '/w':
+			if( reqQuery.type && reqQuery.cityid ){
+				weather.res( reqQuery.type,reqQuery.cityid, res );
+			}
+			else{
+				resLoP( res );
+				return false;
+			}
+			break;
+		case '/blog':
+			break;
+		default:
+			console.log( arguments.callee.name + '   请求的不是天气')
+			break;
+
 	}
-	else{
-		console.log( arguments.callee.name + '   请求的不是天气')
-	}
+	return false;
 	// try{
 	// 	switch( reqQuery.type ){
 	// 		case 'rt':
@@ -183,5 +195,14 @@ function isEmpty( obj ){
 		return false;
 	}
 	return true;
-
 }
+
+function resLoP( res ){
+	res.writeHeader(200,{ 'Content-Type': 'text/plain;charset=utf-8'});
+	var reobj = {
+		return_code: 321,
+		msg: 'lake of paramter'
+	}
+	res.write( JSON.stringify( reobj ));
+	res.end();
+}	
