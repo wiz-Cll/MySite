@@ -1,0 +1,33 @@
+.filter{
+	margin: 50px 30px;
+}
+
+.filter canvas{
+	display: none;
+}
+
+.filter img{
+	display: block;
+}
+
+.filter.done canvas{
+	display: block;
+}
+
+.filter.done img{
+	display: none;
+}
+
+.btn{
+	display: inline-block;
+	padding: 8px;
+	margin: 5px;
+	background: #ef7f7f;
+	text-decoration: none;
+	color: #81cbcb;
+	cursor: pointer;
+}
+
+.fakecanvas{
+	display: none;
+}

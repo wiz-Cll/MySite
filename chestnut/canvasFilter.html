@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="chestnutsrc/layout/canvasFilter.css" media="all" />
+		<script src="chestnutsrc/script/jquery.js"></script>
+		<script src="chestnutsrc/script/canvasFilter.js"></script>
+
+	</head>
+	<body style="background: #accded;">
+		<div class="filter">
+			<img src="chestnutsrc/img/promo_wwdc.png"  id="gs" />
+			<canvas id="test"></canvas>
+			<a class="btn" id="btn_gs">灰阶 GrayScale</a>
+		</div>
+
+		<div class="text">
+			<canvas id="ft"></canvas>
+			<a class="btn" id="btn_ft">填充字体</a>
+		</div>
+
+		<div class="bezier">
+			<canvas id="bezier_canvas" width="300" height="300"></canvas>
+			<a class="btn" id="bezier_btn">绘制贝塞尔曲线</a>
+		</div>		
+	</body>
+</html>
