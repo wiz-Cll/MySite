@@ -9,9 +9,14 @@ $(document).ready( function(){
 
 	$('#btn_ft').click( function(){ 
 		var canvas = $('#ft').get(0);
-		var str = '23';
+		var str = '56';
 		// Text.
+		var funcStart = new Date();
 		Text.echoColorSpot( str, canvas);
+		var funcEnd= new Date();
+		console.log('整个函数，创建虚拟的canvas，写字  读字  描边 写回去，共花费时间： ' + ( funcEnd.valueOf() - funcStart.valueOf() ));
+		// alert( $('body').css('font') );
+
 	} );
 
 
@@ -109,6 +114,8 @@ Text.echoColorSpot = function( str, c){
 	var iData = this.getPixels( str );
 	var d = iData.data;
 	var total = 0;
+	console.log('现在开始统计循环花费的时间');
+	var start = new Date();
 	for(var i = 0, len = d.length; i< len; i +=4){
 		total = d[i] + d[i+1] + d[i+2];
 
@@ -124,21 +131,48 @@ Text.echoColorSpot = function( str, c){
 			// console.log( d[i] + ' 和 ' + d[i+4] + ' 的色值是不一样的' );
 
 			// 透明的色值是这样的： rgb为0  alpha也为0
-			d[i + 4] = d[i+5] = d[i+5] = 255 ;
+			d[i] = d[i+1] = d[i+2] = 255 ;
+			// d[i+4] = d[i+5] = d[i+6] = 0 ;
+
+			// canvas的透明度是全局的啊··一旦修改了  透明的背景也变成黑色的了
+			// 是这样的吗···
+			// d[i+3] = 255;
+			// d
 			// d[i+3] = 1;
 
 			// if( i > 143000){ 
 			// 	break;
 			// }
 		}
+		else{
+			// console.log( i + '不是边缘');
+		}
 	}
+	var end = new Date();
+	console.log('循环和轻微计算共花费时间： ' + (end.valueOf() - start.valueOf()) );
+	// 我勒个去···才12ms  很快嘛
 	var ctx = c.getContext('2d');
 	ctx.putImageData( iData, 0, 0 );
 	return false;
 }
 
 Text.isEdge = function( d, i, width ){
-	if( (d[i+3] === 0 && d[i+4+3] !== 0) || ( d[i+3] !== 0 && d[i+4+3] === 0 ) || ( d[i+3] === 0 && d[i + 4*width +3] !== 0 ) || ( d[i+3] !== 0 && d[i+ 4*width +3] === 0 )){
+	// 左边缘   本身透明度不为0    它 左边 的元素为0
+	if( d[i+3] === 0 && d[i-4+3] !== 0){
+		// console.log( i );
+
+		return true;
+	}
+	// 右边缘     本身透明度不为0    它 右边 的元素为0
+	else if( d[i+3] !== 0 && d[i+4+3] === 0 ){
+		return true;
+	} 
+	// 上边缘  本身透明度不为0    它 头顶 的元素为0
+	else if( d[i+3] !== 0 && d[i - 4*width +3] === 0 ){
+		return true;
+	}
+	// 下边缘 本身透明度不为0    它 脚下 的元素为0
+	else if( d[i+3] !== 0 && d[i+ 4*width +3] === 0 ){
 		return true;
 	}
 	else{
