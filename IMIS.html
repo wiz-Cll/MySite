@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="" media="all" />
+		<script>
+
+		</script>
+		<style>
+			.stu{
+				position: relative;
+				width: 200px;
+				height: 200px;
+			}
+			.stu .info{
+				position: absolute;
+			}
+			.stu div{
+				height: 100%;
+				width: 25%;
+				margin: 0;
+				padding: 0;
+				vertical-align: bottom;
+				position: absolute;
+				background-image: url(src/img/myavatar.png);
+				background-size: auto 100%;
+				background-repeat: no-repeat;
+
+				filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+				-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='rc/img/myavatar.png',sizingMethod='scale')";
+				-moz-background-size: auto 100%;
+
+				border: 0px none transparent;
+				display: inline-block;
+			}
+			.stu div:nth-child(1){
+				left: 0;
+				background-position: 0 0;
+			}
+			.stu div:nth-child(2){
+				left: 25%;
+				background-position: 33.33% 0;
+			}
+			.stu div:nth-child(3){
+				left: 50%;
+				background-position: 66.67% 0;
+			}
+			.stu div:nth-child(4){
+				left: 75%;
+				background-position: 100% 0;
+			}
+
+		</style>
+	</head>
+	<body>
+		<article class="stu">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</article>
+			<!-- <img src="src/img/myavatar.png" alt="" height="200" width="200" /> -->
+
+
+	</body>
+</html>
