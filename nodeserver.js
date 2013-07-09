@@ -10,10 +10,6 @@ var Route = require('./node/siteRoute');
 var server = http.createServer(function( req, res ){
 
 	Route.route( req, res);
-	console.log(' 在nodeserver中 收到请求： -------------');
-	console.log( ' 在nodeserver中 ' + url.parse( req.url).query );
-	console.log(' 在nodeserver中 -------------');
-
 });
 
 server.listen(8800,function(){

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+    var WIDTH = 500;
+    var P = 800;
+    jQuery(function(){
+        function test(width, angle, p) {
+            $('body').
+                append($('<div id="info" />')).
+                append($('<div id="container" />').
+                    css({
+                        margin: '50px 0px',
+                        // border: '1px solid black',
+                        width: width+'px',
+                        '-webkit-perspective': p
+                    }).
+                    append($('<div id="real" />').addClass('the_div').css({ 'width': width+'px' }))).
+                append($('<div id="fake" />').addClass('the_div'));
+
+            // setInterval(function() {
+                angle += 1;
+                angle = 60;
+
+                $('#real').css({ '-webkit-transform': 'rotateY('+angle+'deg)' }).html(width);
+                $('#real').css({ '-webkit-transform-origin': '50% 50%'});
+
+                // initial coordinates
+                var A = 0;
+                var B = width;
+                // translate the center (assuming -perspective-origin at 50%)
+                A -= width/2;
+                B -= width/2;
+                // new coordinates
+                A = calc(A, angle*Math.PI/180, p);
+                B = calc(B, angle*Math.PI/180, p);
+                // translate back
+                A += width/2;
+                B += width/2;
+                if(B < A) { var tmp = A; A = B; B = tmp; } // swap
+                var realwidth = B-A;
+                $('#fake').html(width+'<br/>'+A+', '+B).css({
+                    'width': realwidth+'px',
+                    'margin-left': A+'px'
+                    // 'margin-left': 0+'px'
+                });
+
+                // shows debug information
+                var debug = function(values) { return values.map(function(i){ return i+': '+eval(i); }).join('<br />'); }
+                $('#info').html($('<div />').html(debug(['width', 'p', 'angle', 'A', 'B', 'realwidth'])));
+
+            // }, 40);
+        }
+
+        function calc(oldx, angle, p) {
+            var x = Math.cos(angle) * oldx;
+            var z = Math.sin(angle) * oldx;
+
+            return x * p / (p+z);
+        }
+
+        test(WIDTH, 0, P);
+    });
+    </script>
+    <style type="text/css">
+        * { margin: 0px; padding: 0px; }
+        body { padding: 40px 100px; }
+        .the_div { height: 100px; background-color: rgba(255, 192, 0, 0.5); }
+    </style>
+    </head>
+    <body></body>
+</html>

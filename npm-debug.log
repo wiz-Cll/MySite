@@ -1,0 +1,44 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', 'mongoose' ]
+2 info using npm@1.2.32
+3 info using node@v0.10.12
+4 verbose read json /usr/local/lib/package.json
+5 verbose read json /usr/local/lib/package.json
+6 verbose cache add [ 'mongoose', null ]
+7 verbose cache add name=undefined spec="mongoose" args=["mongoose",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'mongoose',
+8 verbose parsed url   path: 'mongoose',
+8 verbose parsed url   href: 'mongoose' }
+9 silly lockFile f25dbdd3-mongoose mongoose
+10 verbose lock mongoose /Users/chenllos/.npm/f25dbdd3-mongoose.lock
+11 silly lockFile f25dbdd3-mongoose mongoose
+12 verbose addNamed [ 'mongoose', '' ]
+13 verbose addNamed [ null, '' ]
+14 silly lockFile 3bb0fc31-mongoose mongoose@
+15 verbose lock mongoose@ /Users/chenllos/.npm/3bb0fc31-mongoose.lock
+16 silly lockFile 3bb0fc31-mongoose mongoose@
+17 error Error: EACCES, open '/Users/chenllos/.npm/3bb0fc31-mongoose.lock'
+17 error  { [Error: EACCES, open '/Users/chenllos/.npm/3bb0fc31-mongoose.lock']
+17 error   errno: 3,
+17 error   code: 'EACCES',
+17 error   path: '/Users/chenllos/.npm/3bb0fc31-mongoose.lock' }
+18 error Please try running this command again as root/Administrator.
+19 error System Darwin 12.4.1
+20 error command "node" "/usr/local/bin/npm" "install" "-g" "mongoose"
+21 error cwd /Users/chenllos/Documents/dev/MySite
+22 error node -v v0.10.12
+23 error npm -v 1.2.32
+24 error path /Users/chenllos/.npm/3bb0fc31-mongoose.lock
+25 error code EACCES
+26 error errno 3
+27 error stack Error: EACCES, open '/Users/chenllos/.npm/3bb0fc31-mongoose.lock'
+28 verbose exit [ 3, true ]
