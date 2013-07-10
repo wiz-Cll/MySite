@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="src/script/jquery.js"></script>
     <script type="text/javascript">
     var WIDTH = 500;
     var P = 800;
@@ -13,8 +13,9 @@
                     css({
                         margin: '50px 0px',
                         // border: '1px solid black',
-                        width: width+'px',
-                        '-webkit-perspective': p
+                        width: width+'px'
+                        , background: 'rgba(0,0,0,0.8)'
+                        // , '-webkit-perspective': p
                     }).
                     append($('<div id="real" />').addClass('the_div').css({ 'width': width+'px' }))).
                 append($('<div id="fake" />').addClass('the_div'));
@@ -23,7 +24,8 @@
                 angle += 1;
                 angle = 60;
 
-                $('#real').css({ '-webkit-transform': 'rotateY('+angle+'deg)' }).html(width);
+                // $('#real').css({ '-webkit-transform': 'rotateY('+angle+'deg)' }).html(width);
+                $('#real').css({ '-webkit-transform': 'perspective(800) rotateY('+angle+'deg)' }).html(width);
                 $('#real').css({ '-webkit-transform-origin': '50% 50%'});
 
                 // initial coordinates

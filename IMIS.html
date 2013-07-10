@@ -4,103 +4,20 @@
 		<title></title>
 		<meta charset="utf-8"/>
 		<meta name="keywords" content="keyword1 keyword2">
-		<link rel="stylesheet" type="text/css" href="" media="all" />
-		<script>
-
-		</script>
-		<style>
-			.stu{
-				position: relative;
-				width: 400px;
-				height: 400px;
-				-webkit-transform-style: preserve-3d;
-				/*-webkit-perspective-origin: 50% 0%;*/
-				-webkit-perspective: 1000;
-				background: rgba(0,0,0,0.25);
-			}
-			.stu .info{
-				position: absolute;
-			}
-			.stu div{
-				/*float: left;*/
-				/*display: inline-block;*/
-				height: 100%;
-				width: 25%;
-				margin: 0;
-				padding: 0;
-				vertical-align: bottom;
-				position: absolute;
-				background-image: url(src/img/wiz_128x128.png);
-				background-size: auto 100%;
-				background-repeat: no-repeat;
-
-				filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-				-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='rc/img/myavatar.png',sizingMethod='scale')";
-				-moz-background-size: auto 100%;
-
-				border: 0px none transparent;
-				display: inline-block;
-				opacity: 0.5;
-
-				/*-webkit-transform: translateZ(-50px);*/
-			}
-			.stu div:nth-child(1){
-				left: 0;
-				background-position: 0 0;
-				/*background-image: none;*/
-				/*background-color: #000;*/
-				-webkit-transform: rotateY(45deg);
-				-webkit-transform-origin: 50% 50%;
-			}
-			.stu div:nth-child(2){
-				/*left: 12.5%;*/
-				/*left: 25%;*/
-				background-position: 33.33% 0;
-				/*background-image: none;*/
-				/*background-color: #accded;*/
-				left: 0;
-				/*-webkit-transform: rotateY(-45deg);*/
-				/*-webkit-transform-origin: 50% 50%;*/
-
-			}
-		</style>
-		<script>
-			var P = 640;
-			function calc(oldx, angle, p){
-			    var x =Math.cos(angle)* oldx;
-			    var z =Math.sin(angle)* oldx;
-			    return x * p /(p+z);
-			}
-			function changeAngle( nodeObj, transStr){
-				var setting = 'perspective(' + P +') ';
-				nodeObj.style.webkitTransform += transStr;
-			}
-			function addStyleValue( key, value){
-
-			}
-
-			window.onload = function(){
-				var divs = document.querySelectorAll('.stu div');
-				var absA = calc( 0, Math.PI*( 45/180 ), 1000);
-				var absB = calc( 100, Math.PI*( 45/180 ), 1000);
-
-				// var absA2 = calc( -100, Math.PI*( -45/180 ), 1000);
-				// secondDiv.style.left = (absB-absA)+ 'px';
-				// secondDiv.style.left = '25%';
-				// secondDiv.style.width = (absB - absA) + 'px';
-				// secondDiv.style.left = (50 + absA) + 'px';
-				divs[1].style.left = (absB - 0) + 'px';
-				// divs[1].style.left = ( (-100 - absB) + ( absA2 - (-100)) ) + 'px';
-				// (-100 - absB) + ( absA2 - (-100))
-				console.log( secondDiv.style.width );
-			}
-		</script>
+		<link rel="stylesheet" type="text/css" href="src/layout/paperfolder.css" media="all" />
+		<script src="src/script/paperfolder.js"></script>
 	</head>
 	<body>
-		<article class="stu">
-			<div></div>
-			<div></div>
+		<article class="ctn">
+			<div class="trans"></div>
+			<div class="trans"></div>
+			<div class="trans"></div>
+			<div class="trans"></div>
 		</article>
 
+		<article class="ctn">
+			<div class="fake"></div>
+			<div class="fake"></div>
+		</article>
 	</body>
 </html>

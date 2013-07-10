@@ -1,0 +1,23 @@
+html,body{
+	margin: 0;
+	padding: 0;
+}
+
+.ctn{
+	margin: 0 50px;
+	padding: 30px;
+	background: #f6b4b8;
+	width: 800px;
+	height: 400px;
+	position: relative;
+}
+
+.ctn .trans{
+	position: absolute;
+	opacity: 0.75;
+	background: #c0caf9;
+	-webkit-transform-origin: 50% 50%;
+	-webkit-perspective-origin: 50% 50%;
+	width: 200px;
+	height: 80%;
+}
