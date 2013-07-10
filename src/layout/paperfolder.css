@@ -4,20 +4,61 @@ html,body{
 }
 
 .ctn{
-	margin: 0 50px;
-	padding: 30px;
+	/*margin: 30px 50px;*/
+	/*padding: 30px;*/
 	background: #f6b4b8;
-	width: 800px;
+	width: 400.999px;
 	height: 400px;
 	position: relative;
+	border: 8px solid #666;
+	top: 20px;
+	left: 50px;
+	margin: 0;
+	padding: 0;
 }
 
 .ctn .trans{
+	border: none;
+	vertical-align: bottom;
+
 	position: absolute;
-	opacity: 0.75;
+	/*opacity: 0.75;*/
 	background: #c0caf9;
 	-webkit-transform-origin: 50% 50%;
 	-webkit-perspective-origin: 50% 50%;
-	width: 200px;
-	height: 80%;
+	width: 25%;
+	height: 100%;
+
+	/*background-image: url('../img/optimal-living-icon1.jpg');*/
+	/*background-image: url('../img/wiz_128x128.png');*/
+	/*background-image: url('../img/myavatar.png');*/
+	background-image: url('../img/slize.png');
+	background-size: auto 100%;
+	-ms-background-size: auto 100%;
+	-moz-background-size: auto 100%;
+}
+
+.ctn .trans:nth-child(1){
+	left: 0%;
+	background-position: 0 0;
+	z-index: 100;
+}
+.ctn .trans:nth-child(2){
+	left: 25%;
+	z-index: 200;
+
+	background-position: 33.3333% 0;
+}
+.ctn .trans:nth-child(3){
+	left: 50%;
+	z-index: 300;
+	/*width: 100%;*/
+
+	background-position: 66.6667% 0;
+}
+.ctn .trans:nth-child(4){
+	left: 75%;
+	z-index: 400;
+	/*width: 100%;*/
+	background-position: 100% 0;
 }

@@ -1,6 +1,6 @@
-( function(){
+// ( function(){
 	var P = 640;
-	var W = 200;
+	var W = 100;
 	var ANG = 45;
 	function calc(oldx, angle, p){
 	    var x =Math.cos(angle)* oldx;
@@ -39,7 +39,7 @@
 		}
 	}
 
-	function moveToRightPos( nodeList ){
+	function moveToRightPos( nodeList, angle ){
 		var oldA = 0;
 		var oldB = W;
 		var cordA, cordB;
@@ -48,11 +48,12 @@
 		oldA -= W/2;
 		oldB -= W/2;
 		/* -- 使用StackOverflow给出的公式计算 -- */
-		cordA = calc( oldA, ANG * (Math.PI/180), P );
-		cordB = calc( oldB, ANG * (Math.PI/180), P );
+		cordA = calc( oldA, angle * (Math.PI/180), P );
+		cordB = calc( oldB, angle * (Math.PI/180), P );
 		/* -- 还原坐标 -- */
 		newA = cordA + W/2;
 		newB = cordB + W/2;
+		// 在动画中输出console信息反而是浪费时间的···
 		console.log( 'coord: ' + cordA + ' -- ' + cordB );
 		console.log( 'new: ' + newA + ' -- ' + newB );
 
@@ -70,10 +71,35 @@
 		}
 	}
 
+	function slowMotion( transList, angle ){
+		initTransDeg( transList, angle );
+		moveToRightPos( transList, angle );
+	}
+
 	window.onload = function(){
 		var transList = document.querySelectorAll('.ctn .trans');
 
-		initTransDeg( transList, ANG);
-		moveToRightPos( transList );
+		p = Number( window.getComputedStyle( document.querySelector('.ctn') ).width.substr(0,3) );
+
+		slowMotion( transList, 45);
+		// initTransDeg( transList, ANG);
+		// moveToRightPos( transList );
 	}
-})();
+
+
+	// var angle = 0;
+	// var transList = document.querySelectorAll('.ctn .trans');
+
+	// var stID = setInterval( function(){
+	// 	if( angle < 40 ){
+	// 		angle++;
+	// 		slowMotion( transList, angle );
+	// 	}
+	// 	else{
+	// 		clearInterval( stID );
+	// 	}
+	// }, 20);
+
+
+
+// })();
