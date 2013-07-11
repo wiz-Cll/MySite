@@ -1,7 +1,10 @@
 // ( function(){
 	var P = 640;
 	var W = 100;
-	var ANG = 45;
+	var ANG = 0;
+	var transList;
+
+
 	function calc(oldx, angle, p){
 	    var x =Math.cos(angle)* oldx;
 	    var z =Math.sin(angle)* oldx;
@@ -54,8 +57,8 @@
 		newA = cordA + W/2;
 		newB = cordB + W/2;
 		// 在动画中输出console信息反而是浪费时间的···
-		console.log( 'coord: ' + cordA + ' -- ' + cordB );
-		console.log( 'new: ' + newA + ' -- ' + newB );
+		// console.log( 'coord: ' + cordA + ' -- ' + cordB );
+		// console.log( 'new: ' + newA + ' -- ' + newB );
 
 		var realWidth = newB - newA;
 
@@ -71,34 +74,69 @@
 		}
 	}
 
-	function slowMotion( transList, angle ){
+	function slowMotion( options ){
+		var transList = options.transList;
+		var angle = options.angle;
 		initTransDeg( transList, angle );
 		moveToRightPos( transList, angle );
 	}
 
 	window.onload = function(){
-		var transList = document.querySelectorAll('.ctn .trans');
+		transList = document.querySelectorAll('.ctn .trans');
 
-		p = Number( window.getComputedStyle( document.querySelector('.ctn') ).width.substr(0,3) );
+		// W = Number( window.getComputedStyle( document.querySelector('.ctn') ).width.substr(0,3) );
 
-		slowMotion( transList, 45);
-		// initTransDeg( transList, ANG);
-		// moveToRightPos( transList );
+		// slowMotion( transList, 45);
+		var magic = document.querySelector('#magic');
+		var reset = document.querySelector('#reset');
+
+		magic.onclick = function(){
+			var angle = 0;
+			var stID = setInterval( function(){
+				if( angle < 70 ){
+					angle += ( 1 - Math.cos( (angle+40)*Math.PI/180 ) )* 4;
+					slowMotion( { 'transList': transList, 'angle': angle} );
+				}
+				else{
+					clearInterval( stID );
+				}
+			}, 5);
+
+			// ease( 5, angle,  'angle < 70', slowMotion, { 'transList': transList, 'angle': angle});
+			return false;
+		};
+		reset.onclick = function(){
+			var angle = 70;
+			var stID = setInterval( function(){
+				if( angle > 0 ){
+					angle -= ( 1 - Math.cos( (angle+15)*Math.PI/180 ) )* 8;
+					slowMotion( { 'transList': transList, 'angle': angle} );
+				}
+				else{
+					clearInterval( stID );
+				}
+			}, 5);
+			return false;
+		};
+
+
+		
+	}
+
+	function ease( intervalTime, varible,  edgeStr, func, funcArgsObj){
+		var stID = setInterval(function(){
+			if( eval( edgeStr ) ){
+				varible += ( 1 - Math.cos( (varible+15)*Math.PI/180 ) )*8;
+				func( funcArgsObj );
+			}
+			else{
+				clearInterval( stID );
+			}
+		}, intervalTime);
 	}
 
 
-	// var angle = 0;
-	// var transList = document.querySelectorAll('.ctn .trans');
-
-	// var stID = setInterval( function(){
-	// 	if( angle < 40 ){
-	// 		angle++;
-	// 		slowMotion( transList, angle );
-	// 	}
-	// 	else{
-	// 		clearInterval( stID );
-	// 	}
-	// }, 20);
+	
 
 
 

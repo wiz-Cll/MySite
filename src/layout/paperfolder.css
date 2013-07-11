@@ -62,3 +62,12 @@ html,body{
 	/*width: 100%;*/
 	background-position: 100% 0;
 }
+
+.btn{
+	margin: 50px;
+	display: inline-block;
+	border-radius: 16px;
+	height: 40px;
+	padding: 5px;
+	font-size: 2em;
+}
