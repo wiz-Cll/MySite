@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="jsonstr">
+		
+	</div>
+	<div id="jsonview">
+		
+	</div>
+
+	<script>
+
+	var json ={
+		code: 200,
+		info: 'ok',
+		user: {
+			id: 'chenllos@163.com',
+			age: 3,
+			sns: ['sina', 'taobao', 'kuaipan']
+		}
+	};
+
+	var jsonStr = JSON.stringify( json );
+	var jsonStrNode = document.querySelector('#jsonstr');
+	var jsonViewNode = document.querySelector('#jsonview');
+
+	jsonStrNode.innerHTML = jsonStr;
+
+	var jsonStrLen = jsonStr.length;
+	var jsonview = '';
+
+
+	function view( obj, str ){
+
+		if( obj instanceof Array){
+			str += '<ul><li>[</li>';
+
+			var len = obj.length;
+			for( var j = 0; j < len; j++){
+				str += '<li>';
+				str = view( obj[j], str );
+				str += ',</li>';
+			}
+			str += '<li>]</li></ul>';
+		}
+		else if( typeof obj ===  'object' && obj instanceof Object){
+			str +='<ul><li>{</li>';
+			for( var i in obj ){
+				str += '<li> '+i + ': ';
+				str = view( obj[i], str);
+
+				str += ', </li>';
+			}
+			str += '<li>}</li></ul>';
+		}
+		else if( typeof obj === 'number'){
+			str +=  '&nbsp;&nbsp;' + obj;
+		}
+		else if( typeof obj === 'string'){
+			str +=  '&nbsp;&nbsp;"' + obj + '"';
+		}
+
+		return str;
+	}
+
+	jsonview = view( json, jsonview);
+
+
+	jsonViewNode.innerHTML = jsonview;
+
+
+
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+	'name': 'if u r ok',
+	'version': '0.0.2',
+	'dependencies': {
+		'mongoose': '>= 2.3.1'
+	}
+}
